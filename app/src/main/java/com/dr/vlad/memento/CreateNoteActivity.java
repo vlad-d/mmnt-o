@@ -137,13 +137,18 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                 if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
-            }else{
-
-                etNoteBody.requestFocus();
-                showKeyboard();
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void switchBottomSheetState() {
