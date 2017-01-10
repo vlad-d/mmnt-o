@@ -1,30 +1,27 @@
 package com.dr.vlad.memento;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.dr.vlad.memento.notes.Note;
+
+import java.util.Calendar;
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +46,26 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        initializeViews();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                //save note here
+                hideKeyboard(this.getCurrentFocus());
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void initializeViews() {
         llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet_layout);
         bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -79,23 +95,6 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         etNoteBody = (EditText) findViewById(R.id.et_note_body);
 //        etNoteBody.requestFocus();
 //        showKeyboard();
-
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-
-                //save note here
-                hideKeyboard(this.getCurrentFocus());
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 
@@ -158,6 +157,11 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
     }
+
+    private void storeNote() {
+
+    }
+
 
 }
 

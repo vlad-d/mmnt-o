@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(DatabaseContract.NoteTable.COLUMN_TITLE, note.getTitle());
         values.put(DatabaseContract.NoteTable.COLUMN_CREATED_AT, note.getCreatedAt());
         values.putNull(DatabaseContract.NoteTable.COLUMN_DELETED_AT);
-        if (note.getLabelId() != 0) {
+        if (note.getLabelId() != 0 ) {
             values.put(DatabaseContract.NoteTable.COLUMN_LABEL_ID, note.getLabelId());
         }
 

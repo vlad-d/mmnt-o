@@ -1,5 +1,7 @@
 package com.dr.vlad.memento.notes;
 
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 /**
@@ -27,12 +29,14 @@ public class Note {
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
         this.items = items;
+        this.labelId = 0;
     }
 
-    public Note(String title, long createdAt, long deletedAt) {
+    public Note(String title, long createdAt,  long deletedAt) {
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        this.labelId = 0;
     }
 
     public Note(long id, String title, long createdAt, long deletedAt) {
@@ -40,6 +44,7 @@ public class Note {
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        this.labelId = 0;
     }
 
     public List<NoteItem> getItems() {
