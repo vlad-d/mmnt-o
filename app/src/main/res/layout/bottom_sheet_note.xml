@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_layout"
+    android:layout_width="match_parent"
+    android:layout_height="288dp"
+    android:background="@color/colorPrimary"
+    android:elevation="6dp"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:weightSum="6"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="48dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_action_enhance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:text="Enhance"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_enhance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_action_enhance" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_bs_action_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_cancel"
+        android:drawablePadding="32dp"
+        android:gravity="center_vertical"
+        android:text="@string/bottom_sheet_cancel"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_bs_action_send"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_send"
+        android:drawablePadding="32dp"
+        android:gravity="center_vertical"
+        android:text="@string/bottom_sheet_send"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_bs_action_protect"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_protect"
+        android:drawablePadding="32dp"
+        android:gravity="center_vertical"
+        android:text="@string/bottom_sheet_protect"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_bs_action_set_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_set_reminder"
+        android:drawablePadding="32dp"
+        android:gravity="center_vertical"
+        android:text="@string/bottom_sheet_set_reminder"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_bs_action_add_label"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_action_add_label"
+        android:drawablePadding="32dp"
+        android:gravity="center_vertical"
+        android:text="@string/bottom_sheet_add_label"
+        android:textSize="16sp" />
+</LinearLayout>

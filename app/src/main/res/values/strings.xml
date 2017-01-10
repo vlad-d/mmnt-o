@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Memento</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--Messages-->
+    <string name="message_close_app">Close application?</string>
+
+
+    <!--Buttons-->
+    <string name="close_app">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="empty_list">There are no notes</string>
+
+    <!--Hints-->
+    <string name="hint_note_title">Title</string>
+    <string name="hint_note_body">Note</string>
+
+    <!---->
+    <string name="bottom_sheet_cancel">Cancel</string>
+    <string name="bottom_sheet_send">Send</string>
+    <string name="bottom_sheet_protect">Protect</string>
+    <string name="bottom_sheet_set_reminder">Set reminder</string>
+    <string name="bottom_sheet_add_label">Add label</string>
+</resources>
