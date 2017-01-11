@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
 
     List<Note> notes;
     RecyclerView rvMainRecyclerView;
+    RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
