@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
             tvEmptyList.setVisibility(View.GONE);
             rvMainRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
             rvMainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            adapter = new NoteAdapter(this.getApplicationContext(), notes);
+            rvMainRecyclerView.setAdapter(adapter);
         }
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
