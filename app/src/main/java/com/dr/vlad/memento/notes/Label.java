@@ -5,18 +5,18 @@ package com.dr.vlad.memento.notes;
  */
 
 public class Label {
-    private long id;
+    private Long id;
     private String title;
     private String color;
-    private long createdAt;
+    private Long createdAt;
 
-    public Label(String title, String color, long createdAt) {
+    public Label(String title, String color, Long createdAt) {
         this.title = title;
         this.color = color;
         this.createdAt = createdAt;
     }
 
-    public Label(long id, String title, String color, long createdAt) {
+    public Label(Long id, String title, String color, Long createdAt) {
         this.id = id;
         this.title = title;
         this.color = color;
@@ -24,11 +24,11 @@ public class Label {
     }
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,11 +48,11 @@ public class Label {
         this.color = color;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 }

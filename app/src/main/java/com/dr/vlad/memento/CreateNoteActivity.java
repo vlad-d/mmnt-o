@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dr.vlad.memento.notes.Note;
+import com.dr.vlad.memento.notes.NoteItem;
 
 import java.util.Calendar;
 
@@ -56,6 +58,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             case android.R.id.home:
 
                 //save note here
+                storeNote();
                 hideKeyboard(this.getCurrentFocus());
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
@@ -146,6 +149,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
+            storeNote();
             super.onBackPressed();
         }
     }
@@ -159,6 +163,24 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void storeNote() {
+        String noteTite = etNoteTitle.getText().toString();
+        noteTite = noteTite.isEmpty() ? "" : noteTite;
+
+        String noteBody = etNoteBody.getText().toString();
+        noteBody = noteBody.isEmpty() ? "" : noteBody;
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        Calendar now = Calendar.getInstance();
+        Note note = new Note(noteTite, now.getTimeInMillis(), null);
+
+        long noteId = db.insertNote(note);
+        note.setId(noteId);
+
+        Log.d("NoteActivity", "note id: " + noteId);
+        NoteItem item = new NoteItem(noteId, noteBody, 0, now.getTimeInMillis());
+        long itemId = db.insertItem(item);
+        Log.d("NoteActivity", "item id: " + itemId);
+
 
     }
 

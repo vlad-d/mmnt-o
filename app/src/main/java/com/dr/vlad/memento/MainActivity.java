@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dr.vlad.memento.notes.Note;
+import com.dr.vlad.memento.notes.NoteItem;
 
 import java.util.List;
 
@@ -54,9 +55,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("Notes");
         setSupportActionBar(toolbar);
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        notes = db.getNotes();
-        Log.i(TAG, "Nr. of notes: " + notes.size());
+        notes = getNotesWithItems();
         TextView tvEmptyList = (TextView) findViewById(R.id.tv_empty_list);
         if (notes.isEmpty()) {
             if (tvEmptyList.getVisibility() != View.VISIBLE) {
@@ -94,6 +93,20 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_notes);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (babState == BAB_STATE_EXPANDED) {
+            hideBottomNavigation();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resetBottomNavigation();
     }
 
     @Override
@@ -284,18 +297,18 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (babState == BAB_STATE_EXPANDED) {
-            hideBottomNavigation();
+    private List<Note> getNotesWithItems() {
+        DatabaseHelper db = new DatabaseHelper(this);
+        List<Note> notes = db.getNotes();
+        if (!notes.isEmpty()) {
+            for (Note note : notes) {
+                List<NoteItem> items = db.getNoteItems(note.getId());
+                note.setItems(items);
+            }
         }
+
+        return notes;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        resetBottomNavigation();
-    }
+
 }

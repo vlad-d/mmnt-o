@@ -5,13 +5,19 @@ package com.dr.vlad.memento.notes;
  */
 
 public class NoteItem {
-    private long id;
-    private long noteId;
+    private Long id;
+    private Long noteId;
     private String text;
-    private int order;
-    private long editedAt;
+    private Integer order;
+    private Long editedAt;
 
-    public NoteItem(long noteId, String text, int order, long editedAt) {
+    /**
+     * @param noteId
+     * @param text
+     * @param order
+     * @param editedAt
+     */
+    public NoteItem(Long noteId, String text, Integer order, Long editedAt) {
 
         this.noteId = noteId;
         this.text = text;
@@ -19,7 +25,7 @@ public class NoteItem {
         this.editedAt = editedAt;
     }
 
-    public NoteItem(long id, long noteId, String text, int order, long editedAt) {
+    public NoteItem(Long id, Long noteId, String text, Integer order, Long editedAt) {
 
         this.id = id;
         this.noteId = noteId;
@@ -28,19 +34,19 @@ public class NoteItem {
         this.editedAt = editedAt;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getNoteId() {
+    public Long getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(long noteId) {
+    public void setNoteId(Long noteId) {
         this.noteId = noteId;
     }
 
@@ -52,19 +58,19 @@ public class NoteItem {
         this.text = text;
     }
 
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 
-    public long getEditedAt() {
+    public Long getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(long editedAt) {
+    public void setEditedAt(Long editedAt) {
         this.editedAt = editedAt;
     }
 }

@@ -9,14 +9,14 @@ import java.util.List;
  */
 
 public class Note {
-    private long id;
-    private long labelId;
+    private Long id;
+    private Long labelId;
     private String title;
-    private long createdAt;
-    private long deletedAt;
+    private Long createdAt;
+    private Long deletedAt;
     private List<NoteItem> items;
 
-    public Note(long id, long labelId, String title, long createdAt, long deletedAt) {
+    public Note(Long id, Long labelId, String title, Long createdAt, Long deletedAt) {
         this.id = id;
         this.labelId = labelId;
         this.title = title;
@@ -24,27 +24,27 @@ public class Note {
         this.deletedAt = deletedAt;
     }
 
-    public Note(String title, long createdAt, long deletedAt, List<NoteItem> items) {
+    public Note(String title, Long createdAt, Long deletedAt, List<NoteItem> items) {
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
         this.items = items;
-        this.labelId = 0;
+        this.labelId = null;
     }
 
-    public Note(String title, long createdAt,  long deletedAt) {
+    public Note(String title, Long createdAt,  Long deletedAt) {
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
-        this.labelId = 0;
+        this.labelId = null;
     }
 
-    public Note(long id, String title, long createdAt, long deletedAt) {
+    public Note(Long id, String title, Long createdAt, Long deletedAt) {
         this.id = id;
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
-        this.labelId = 0;
+        this.labelId = null;
     }
 
     public List<NoteItem> getItems() {
@@ -55,19 +55,19 @@ public class Note {
         this.items = items;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getLabelId() {
+    public Long getLabelId() {
         return labelId;
     }
 
-    public void setLabelId(long labelId) {
+    public void setLabelId(Long labelId) {
         this.labelId = labelId;
     }
 
@@ -79,19 +79,19 @@ public class Note {
         this.title = title;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public long getDeletedAt() {
+    public Long getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(long deletedAt) {
+    public void setDeletedAt(Long deletedAt) {
         this.deletedAt = deletedAt;
     }
 }

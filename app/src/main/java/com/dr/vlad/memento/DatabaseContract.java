@@ -38,7 +38,7 @@ public final class DatabaseContract {
         public static final String DEFAULT_SORT_ORDER = COLUMN_CREATED_AT + " DESC";
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
-                + _ID + " INT PRIMARY KEY" + COMMA_SEP
+                + _ID + " INTEGER PRIMARY KEY" + COMMA_SEP
                 + COLUMN_LABEL_ID + " INT" + COMMA_SEP
                 + COLUMN_TITLE + " TEXT " + COMMA_SEP
                 + COLUMN_CREATED_AT + " INT NOT NULL " + COMMA_SEP
@@ -57,7 +57,7 @@ public final class DatabaseContract {
         public static final String DEFAULT_SORT_ORDER = COLUMN_ORDER + " ASC";
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
-                + _ID + " INT PRIMARY KEY" + COMMA_SEP
+                + _ID + " INTEGER PRIMARY KEY" + COMMA_SEP
                 + COLUMN_NOTE_ID + " INT" + COMMA_SEP
                 + COLUMN_TEXT + " TEXT" + COMMA_SEP
                 + COLUMN_ORDER + " INT NOT NULL" + COMMA_SEP
@@ -76,7 +76,7 @@ public final class DatabaseContract {
         public static final String DEFAULT_SORT_ORDER = COLUMN_TITLE + " ASC";
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
-                + _ID + " INT PRIMARY KEY" + COMMA_SEP
+                + _ID + " INTEGER PRIMARY KEY" + COMMA_SEP
                 + COLUMN_TITLE + " TEXT NOT NULL" + COMMA_SEP
                 + COLUMN_COLOR + " TEXT NOT NULL" + COMMA_SEP
                 + COLUMN_CREATED_AT + " INT" + " );";
