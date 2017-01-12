@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity
             tvEmptyList.setVisibility(View.GONE);
             rvMainRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
             rvMainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            adapter = new NoteAdapter(this.getApplicationContext(), notes);
+            adapter = new NoteAdapter(MainActivity.this, notes);
             rvMainRecyclerView.setAdapter(adapter);
         }
 
@@ -272,7 +271,7 @@ public class MainActivity extends AppCompatActivity
         int id = view.getId();
         switch (id) {
             case R.id.btn_create_note:
-                startActivity(new Intent(this, CreateNoteActivity.class));
+                startActivity(new Intent(this, NoteActivity.class));
                 break;
 
             case R.id.btn_create_checklist:

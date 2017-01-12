@@ -1,10 +1,11 @@
 package com.dr.vlad.memento;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -62,8 +63,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             }
         }
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, NoteActivity.class);
+                intent.putExtra(context.getResources().getString(R.string.key_note_id), note.getId());
+                context.startActivity(intent);
+            }
+        });
+
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -71,7 +82,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     }
 
     /**
-     *
      * @param drawLine
      * @return TextView
      */
@@ -103,11 +113,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout layout;
+        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             layout = (LinearLayout) itemView.findViewById(R.id.ll_note_item);
-
+            cardView = (CardView) itemView.findViewById(R.id.cv_note_item);
         }
     }
 }

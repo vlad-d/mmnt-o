@@ -23,7 +23,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".CreateNoteActivity"
+            android:name=".NoteActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 

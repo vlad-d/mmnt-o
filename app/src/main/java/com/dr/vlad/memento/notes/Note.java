@@ -16,6 +16,9 @@ public class Note {
     private Long deletedAt;
     private List<NoteItem> items;
 
+    public Note() {
+    }
+
     public Note(Long id, Long labelId, String title, Long createdAt, Long deletedAt) {
         this.id = id;
         this.labelId = labelId;
@@ -32,7 +35,7 @@ public class Note {
         this.labelId = null;
     }
 
-    public Note(String title, Long createdAt,  Long deletedAt) {
+    public Note(String title, Long createdAt, Long deletedAt) {
         this.title = title;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;

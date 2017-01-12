@@ -57,6 +57,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    public Note getNote(long noteId) {
+        Note note = new Note();
+        String selectQuery = "SELECT * FROM " + DatabaseContract.NoteTable.TABLE_NAME + " WHERE " + DatabaseContract.NoteTable._ID + " = " + noteId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            note.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable._ID)));
+            note.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_TITLE)));
+            note.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_CREATED_AT)));
+            note.setDeletedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_DELETED_AT)));
+            note.setLabelId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_LABEL_ID)));
+        }
+
+
+        return note;
+    }
+
+    public void updateNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.NoteTable.COLUMN_TITLE, note.getTitle());
+        if (note.getLabelId() != null) {
+            values.put(DatabaseContract.NoteTable.COLUMN_LABEL_ID, note.getLabelId());
+        }
+        db.update(DatabaseContract.NoteTable.TABLE_NAME, values, DatabaseContract.NoteTable._ID + " =? ", new String[]{String.valueOf(note.getId())});
+    }
+
 
     public List<Note> getNotes() {
         List<Note> notes = new ArrayList<>();
@@ -85,6 +112,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    public void updateItem(NoteItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.NoteItemsTable.COLUMN_TEXT, item.getText());
+        values.put(DatabaseContract.NoteItemsTable.COLUMN_DONE, item.getDone());
+        values.put(DatabaseContract.NoteItemsTable.COLUMN_ORDER, item.getOrder());
+        values.put(DatabaseContract.NoteItemsTable.COLUMN_EDITED_AT, item.getEditedAt());
+        db.update(DatabaseContract.NoteItemsTable.TABLE_NAME, values, DatabaseContract.NoteItemsTable._ID + " =?", new String[]{String.valueOf(item.getId())});
+    }
+
     public List<NoteItem> getNoteItems(long noteId) {
         List<NoteItem> items = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + DatabaseContract.NoteItemsTable.TABLE_NAME
@@ -100,8 +137,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return items;
     }
-
-
 
 
 }

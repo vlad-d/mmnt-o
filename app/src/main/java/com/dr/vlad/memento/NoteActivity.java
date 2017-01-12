@@ -24,8 +24,9 @@ import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
 
 import java.util.Calendar;
+import java.util.List;
 
-public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
+public class NoteActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int color;
     private EditText etNoteTitle;
@@ -34,10 +35,15 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     //Bottom sheet
     private LinearLayout llBottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
-    private TextView tvEnhance;
     private ImageButton ibtnEnhance;
 
     private BottomSheetDialogFragment bottomSheetDialogFragment;
+
+    DatabaseHelper db;
+    private Note note = new Note();
+    private NoteItem noteItem = new NoteItem();
+    Calendar now;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,27 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
         initializeViews();
 
+        db = new DatabaseHelper(this);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            long noteId = bundle.getLong(getResources().getString(R.string.key_note_id));
+            note = db.getNote(noteId);
+            note.setItems(db.getNoteItems(noteId));
+        }
+
+
+        if (note.getId() != null) {
+            noteItem = note.getItems().get(0);
+            String title = note.getTitle();
+            if (!title.isEmpty()) {
+                etNoteTitle.setText(note.getTitle());
+            }
+            String body = noteItem.getText();
+            if (!body.isEmpty()) {
+                etNoteBody.setText(body);
+            }
+        }
+
     }
 
     @Override
@@ -58,7 +85,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             case android.R.id.home:
 
                 //save note here
-                storeNote();
+                saveNote();
                 hideKeyboard(this.getCurrentFocus());
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
@@ -86,7 +113,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        tvEnhance = (TextView) findViewById(R.id.tv_action_enhance);
+        TextView tvEnhance = (TextView) findViewById(R.id.tv_action_enhance);
         tvEnhance.setOnClickListener(this);
 
         ibtnEnhance = (ImageButton) findViewById(R.id.btn_enhance);
@@ -149,8 +176,10 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
-            storeNote();
-            super.onBackPressed();
+            saveNote();
+            hideKeyboard(this.getCurrentFocus());
+            NavUtils.navigateUpFromSameTask(this);
+//            super.onBackPressed();
         }
     }
 
@@ -162,26 +191,65 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void storeNote() {
-        String noteTite = etNoteTitle.getText().toString();
-        noteTite = noteTite.isEmpty() ? "" : noteTite;
+
+    private void saveNote() {
+
+        String noteTitle = etNoteTitle.getText().toString();
+        noteTitle = noteTitle.isEmpty() ? "" : noteTitle;
 
         String noteBody = etNoteBody.getText().toString();
         noteBody = noteBody.isEmpty() ? "" : noteBody;
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        Calendar now = Calendar.getInstance();
-        Note note = new Note(noteTite, now.getTimeInMillis(), null);
+        note.setTitle(noteTitle);
+        noteItem.setText(noteBody);
 
+
+        if (note.getId() == null) {
+            storeNote();
+        } else {
+            editNote();
+        }
+
+        if (noteItem.getId() == null) {
+            storeItem();
+        } else {
+            editItem();
+        }
+
+    }
+
+
+    private void storeNote() {
+        now = Calendar.getInstance();
+        note.setCreatedAt(now.getTimeInMillis());
         long noteId = db.insertNote(note);
         note.setId(noteId);
 
-        Log.d("NoteActivity", "note id: " + noteId);
-        NoteItem item = new NoteItem(noteId, noteBody, 0, 0, now.getTimeInMillis());
-        long itemId = db.insertItem(item);
-        Log.d("NoteActivity", "item id: " + itemId);
+//        NoteItem item = new NoteItem(noteId, noteBody, 0, 0, now.getTimeInMillis());
+//        long itemId = db.insertItem(item);
 
 
+    }
+
+    private void editNote() {
+        db.updateNote(note);
+    }
+
+    private void storeItem() {
+
+        noteItem.setNoteId(note.getId());
+        noteItem.setEditedAt(now.getTimeInMillis());
+        noteItem.setOrder(0);
+        noteItem.setDone(0);
+        long itemId = db.insertItem(noteItem);
+        noteItem.setId(itemId);
+
+    }
+
+    private void editItem() {
+        Calendar editedAt = Calendar.getInstance();
+        noteItem.setEditedAt(editedAt.getTimeInMillis());
+        db.updateItem(noteItem);
     }
 
 

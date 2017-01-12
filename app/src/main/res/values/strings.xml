@@ -25,4 +25,8 @@
     <string name="bottom_sheet_protect">Protect</string>
     <string name="bottom_sheet_set_reminder">Set reminder</string>
     <string name="bottom_sheet_add_label">Add label</string>
+
+
+    <!--Keys-->
+    <string name="key_note_id">activity_note_id</string>
 </resources>

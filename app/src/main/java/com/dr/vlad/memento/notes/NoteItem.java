@@ -10,9 +10,10 @@ public class NoteItem {
     private String text;
     private Integer order;
     private Integer done;
-
-
     private Long editedAt;
+
+    public NoteItem() {
+    }
 
     /**
      * @param noteId
