@@ -9,6 +9,9 @@ public class NoteItem {
     private Long noteId;
     private String text;
     private Integer order;
+    private Integer done;
+
+
     private Long editedAt;
 
     /**
@@ -17,20 +20,22 @@ public class NoteItem {
      * @param order
      * @param editedAt
      */
-    public NoteItem(Long noteId, String text, Integer order, Long editedAt) {
+    public NoteItem(Long noteId, String text, Integer order, Integer done, Long editedAt) {
 
         this.noteId = noteId;
         this.text = text;
         this.order = order;
+        this.done = done;
         this.editedAt = editedAt;
     }
 
-    public NoteItem(Long id, Long noteId, String text, Integer order, Long editedAt) {
+    public NoteItem(Long id, Long noteId, String text, Integer order, Integer done, Long editedAt) {
 
         this.id = id;
         this.noteId = noteId;
         this.text = text;
         this.order = order;
+        this.done = done;
         this.editedAt = editedAt;
     }
 
@@ -64,6 +69,14 @@ public class NoteItem {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Integer getDone() {
+        return done;
+    }
+
+    public void setDone(Integer done) {
+        this.done = done;
     }
 
     public Long getEditedAt() {

@@ -54,7 +54,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             for (NoteItem item : items) {
                 String text = item.getText();
                 if (!text.isEmpty()) {
-                    TextView tvItem = createTextView(true);
+                    TextView tvItem = createTextView(item.getDone() != 0);
                     tvItem.setText(text);
                     holder.layout.addView(tvItem);
                 }
@@ -70,10 +70,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return notes.size();
     }
 
+    /**
+     *
+     * @param drawLine
+     * @return TextView
+     */
     private TextView createTextView(boolean drawLine) {
         TextView textView = new TextView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(24, 24, 24, 24);
+        params.setMargins(24, 0, 24, 24);
         textView.setLayoutParams(params);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorTextSecondary));

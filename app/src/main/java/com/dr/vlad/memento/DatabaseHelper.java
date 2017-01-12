@@ -79,6 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(DatabaseContract.NoteItemsTable.COLUMN_NOTE_ID, item.getNoteId());
         values.put(DatabaseContract.NoteItemsTable.COLUMN_TEXT, item.getText());
         values.put(DatabaseContract.NoteItemsTable.COLUMN_ORDER, item.getOrder());
+        values.put(DatabaseContract.NoteItemsTable.COLUMN_DONE, item.getDone());
         values.put(DatabaseContract.NoteItemsTable.COLUMN_EDITED_AT, item.getEditedAt());
         long newRowId = db.insert(DatabaseContract.NoteItemsTable.TABLE_NAME, null, values);
         return newRowId;
@@ -92,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                NoteItem item = new NoteItem(cursor.getLong(0), cursor.getLong(1), cursor.getString(2), cursor.getInt(3), cursor.getLong(4));
+                NoteItem item = new NoteItem(cursor.getLong(0), cursor.getLong(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(5), cursor.getLong(4));
                 items.add(item);
             } while (cursor.moveToNext());
         }

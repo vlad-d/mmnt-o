@@ -177,7 +177,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         note.setId(noteId);
 
         Log.d("NoteActivity", "note id: " + noteId);
-        NoteItem item = new NoteItem(noteId, noteBody, 0, now.getTimeInMillis());
+        NoteItem item = new NoteItem(noteId, noteBody, 0, 0, now.getTimeInMillis());
         long itemId = db.insertItem(item);
         Log.d("NoteActivity", "item id: " + itemId);
 

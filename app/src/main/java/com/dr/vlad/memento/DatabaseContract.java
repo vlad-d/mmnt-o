@@ -52,6 +52,7 @@ public final class DatabaseContract {
         public static final String COLUMN_NOTE_ID = "note_id";
         public static final String COLUMN_TEXT = "content";
         public static final String COLUMN_ORDER = "position";
+        public static final String COLUMN_DONE = "done";
         public static final String COLUMN_EDITED_AT = "edited_at";
 
         public static final String DEFAULT_SORT_ORDER = COLUMN_ORDER + " ASC";
@@ -62,6 +63,7 @@ public final class DatabaseContract {
                 + COLUMN_TEXT + " TEXT" + COMMA_SEP
                 + COLUMN_ORDER + " INT NOT NULL" + COMMA_SEP
                 + COLUMN_EDITED_AT + " INT" + COMMA_SEP
+                + COLUMN_DONE + " INT NOT NULL DEFAULT 0" + COMMA_SEP
                 + "FOREIGN KEY(" + COLUMN_NOTE_ID + ") REFERENCES " + NoteTable.TABLE_NAME + "(" + NoteTable._ID + ")"
                 + " );";
 
