@@ -13,6 +13,7 @@
 
     <!--grayscale-->
     <color name="lightGrey">#F7F7F7</color>
+    <color name="lightGreyOpaque">#CCF7F7F7</color>
     <color name="grey">#d6d6d6</color>
 
 </resources>
