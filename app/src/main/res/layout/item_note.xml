@@ -47,10 +47,10 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/ll_note_protected"
+            android:id="@+id/rl_note_protected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/lightGreyOpaque">
+            android:background="@color/lightGrey">
 
             <ImageView
                 android:id="@+id/iv_note_protected"

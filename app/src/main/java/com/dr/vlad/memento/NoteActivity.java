@@ -10,7 +10,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,26 +23,26 @@ import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class NoteActivity extends AppCompatActivity implements View.OnClickListener {
 
+    DatabaseHelper db;
+    Calendar now;
     private int color;
     private EditText etNoteTitle;
     private EditText etNoteBody;
-
     //Bottom sheet
     private LinearLayout llBottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private ImageButton ibtnEnhance;
-
+    private TextView tvActionCancel;
+    private TextView tvActionSend;
+    private TextView tvActionProtect;
+    private TextView tvActionSetReminder;
+    private TextView tvActionAddLabel;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-
-    DatabaseHelper db;
     private Note note = new Note();
     private NoteItem noteItem = new NoteItem();
-    Calendar now;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +118,20 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         ibtnEnhance = (ImageButton) findViewById(R.id.btn_enhance);
         ibtnEnhance.setOnClickListener(this);
 
+        tvActionCancel = (TextView) findViewById(R.id.tv_bs_action_cancel);
+        tvActionCancel.setOnClickListener(this);
+
+        tvActionProtect = (TextView) findViewById(R.id.tv_bs_action_protect);
+        tvActionProtect.setOnClickListener(this);
+
         color = ContextCompat.getColor(this, R.color.colorAccent);
         etNoteTitle = (EditText) findViewById(R.id.et_note_title);
         etNoteTitle.setHintTextColor(color);
         etNoteBody = (EditText) findViewById(R.id.et_note_body);
 //        etNoteBody.requestFocus();
 //        showKeyboard();
+
+
     }
 
 
@@ -152,6 +159,14 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
                 switchBottomSheetState();
                 break;
 
+            case R.id.tv_bs_action_cancel:
+                finish();
+                break;
+
+            case R.id.tv_bs_action_protect:
+                note.setProtect(1);
+                switchBottomSheetState();
+                break;
         }
     }
 
@@ -222,6 +237,9 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     private void storeNote() {
         now = Calendar.getInstance();
         note.setCreatedAt(now.getTimeInMillis());
+        if (note.getProtect() == null) {
+            note.setProtect(0);
+        }
         long noteId = db.insertNote(note);
         note.setId(noteId);
 

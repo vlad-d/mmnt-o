@@ -32,6 +32,7 @@ public final class DatabaseContract {
         public static final String TABLE_NAME = "notes";
         public static final String COLUMN_LABEL_ID = "label_id";
         public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_PROTECTED = "protect";
         public static final String COLUMN_CREATED_AT = "created_at";
         public static final String COLUMN_DELETED_AT = "deleted_at";
 
@@ -41,6 +42,7 @@ public final class DatabaseContract {
                 + _ID + " INTEGER PRIMARY KEY" + COMMA_SEP
                 + COLUMN_LABEL_ID + " INT" + COMMA_SEP
                 + COLUMN_TITLE + " TEXT " + COMMA_SEP
+                + COLUMN_PROTECTED + " INT NOT NULL DEFAULT 0" + COMMA_SEP
                 + COLUMN_CREATED_AT + " INT NOT NULL " + COMMA_SEP
                 + COLUMN_DELETED_AT + " INT"  + COMMA_SEP
                 + "FOREIGN KEY(" + COLUMN_LABEL_ID + ") REFERENCES " + LabelsTable.TABLE_NAME + "(" + LabelsTable._ID + ")"

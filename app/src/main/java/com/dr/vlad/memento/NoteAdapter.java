@@ -1,18 +1,18 @@
 package com.dr.vlad.memento;
 
 import android.content.Context;
-import android.graphics.Paint;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,8 +38,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Note note = notes.get(position);
+       final Note note = notes.get(position);
         List<NoteItem> items = note.getItems();
+        if (note.getProtect() == 0) {
+            holder.noteProtected.setVisibility(View.GONE);
+        } else {
+            holder.noteProtected.setVisibility(View.VISIBLE);
+        }
         holder.tvTitle.setText(note.getTitle());
         int itemsSize = items.size();
         if (!items.isEmpty()) {
@@ -58,6 +63,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 //                }
 //            }
         }
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, NoteActivity.class);
+                intent.putExtra(context.getResources().getString(R.string.key_note_id), note.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -71,6 +84,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         private TextView tvTitle;
         private TextView tvBody;
         private CardView cardView;
+        private RelativeLayout noteProtected;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -78,6 +92,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             tvTitle = (TextView) itemView.findViewById(R.id.tv_note_title);
             tvBody = (TextView) itemView.findViewById(R.id.tv_note_body);
             cardView = (CardView) itemView.findViewById(R.id.cv_note_item);
+            noteProtected = (RelativeLayout) itemView.findViewById(R.id.rl_note_protected);
         }
     }
 

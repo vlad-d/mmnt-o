@@ -10,7 +10,6 @@ import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -19,8 +18,9 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TAG = DatabaseHelper.class.getSimpleName();
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MementoDatabase.db";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,10 +35,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        for (String item : DatabaseContract.CREATE_TABLE_ARRAY) {
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS" + item);
-            onCreate(sqLiteDatabase);
+        for (String item : DatabaseContract.TABLES_ARRAY) {
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + item);
         }
+        onCreate(sqLiteDatabase);
     }
 
     public long insertNote(Note note) {
@@ -47,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.NoteTable.COLUMN_TITLE, note.getTitle());
         values.put(DatabaseContract.NoteTable.COLUMN_CREATED_AT, note.getCreatedAt());
+        values.put(DatabaseContract.NoteTable.COLUMN_PROTECTED, note.getProtect());
         values.putNull(DatabaseContract.NoteTable.COLUMN_DELETED_AT);
         if (note.getLabelId() != null) {
             values.put(DatabaseContract.NoteTable.COLUMN_LABEL_ID, note.getLabelId());
@@ -65,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             note.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable._ID)));
             note.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_TITLE)));
+            note.setProtect(cursor.getInt(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_PROTECTED)));
             note.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_CREATED_AT)));
             note.setDeletedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_DELETED_AT)));
             note.setLabelId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_LABEL_ID)));
@@ -78,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.NoteTable.COLUMN_TITLE, note.getTitle());
+        values.put(DatabaseContract.NoteTable.COLUMN_PROTECTED, note.getProtect());
         if (note.getLabelId() != null) {
             values.put(DatabaseContract.NoteTable.COLUMN_LABEL_ID, note.getLabelId());
         }
@@ -92,7 +95,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Note note = new Note(cursor.getLong(0), cursor.getLong(1), cursor.getString(2), cursor.getLong(3), cursor.getLong(4));
+                Note note = new Note(
+                        cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable._ID)),
+                        cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_LABEL_ID)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_TITLE)),
+                        cursor.getInt(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_PROTECTED)),
+                        cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_CREATED_AT)),
+                        cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_DELETED_AT))
+                );
                 notes.add(note);
             } while (cursor.moveToNext());
         }
