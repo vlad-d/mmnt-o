@@ -26,6 +26,8 @@ import java.util.Calendar;
 
 public class NoteActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //Note auth
+    private static final String DIALOG_FRAGMENT_TAG = "myFragment";
     DatabaseHelper db;
     Calendar now;
     private int color;
@@ -66,6 +68,13 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         if (note.getId() != null) {
             noteItem = note.getItems().get(0);
+
+            if (note.getProtect() != 0) {
+                //protected
+                FingerprintAuthDialogFragment fragment = new FingerprintAuthDialogFragment();
+                fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+            }
+
             String title = note.getTitle();
             if (!title.isEmpty()) {
                 etNoteTitle.setText(note.getTitle());

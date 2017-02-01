@@ -1,5 +1,6 @@
 package com.dr.vlad.memento;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -23,6 +24,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     private Context context;
     private List<Note> notes;
+    private static final String DIALOG_FRAGMENT_TAG = "myFragment";
 
     public NoteAdapter(Context context, List<Note> notes) {
         this.context = context;
@@ -38,7 +40,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-       final Note note = notes.get(position);
+        final Note note = notes.get(position);
         List<NoteItem> items = note.getItems();
         if (note.getProtect() == 0) {
             holder.noteProtected.setVisibility(View.GONE);
@@ -66,9 +68,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NoteActivity.class);
-                intent.putExtra(context.getResources().getString(R.string.key_note_id), note.getId());
-                context.startActivity(intent);
+                if (note.getProtect() != 0) {
+                    FingerprintAuthDialogFragment fragment = new FingerprintAuthDialogFragment();
+                    fragment.show(((Activity)context).getFragmentManager(), DIALOG_FRAGMENT_TAG);
+                } else {
+                    Intent intent = new Intent(context, NoteActivity.class);
+                    intent.putExtra(context.getResources().getString(R.string.key_note_id), note.getId());
+                    context.startActivity(intent);
+                }
+
             }
         });
     }

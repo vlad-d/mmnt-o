@@ -19,13 +19,22 @@
     <string name="hint_note_title">Title</string>
     <string name="hint_note_body">Note</string>
 
-    <!---->
+    <!--BottomSheet-->
     <string name="bottom_sheet_cancel">Cancel</string>
     <string name="bottom_sheet_send">Send</string>
     <string name="bottom_sheet_protect">Protect</string>
     <string name="bottom_sheet_set_reminder">Set reminder</string>
     <string name="bottom_sheet_add_label">Add label</string>
 
+    <!--Fingerprint-->
+    <string name="use_password">Use password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="ok">Ok</string>
+    <string name="password">Password</string>
+    <string name="fingerprint_description">Confirm fingerprint to continue</string>
+    <string name="fingerprint_hint">Touch sensor</string>
+    <string name="new_fingerprint_enrolled_description">A new fingerprint was added to this device, so your password is required.</string>
+    <string name="password_description">Enter your password to continue</string>
 
     <!--Keys-->
     <string name="key_note_id">activity_note_id</string>
