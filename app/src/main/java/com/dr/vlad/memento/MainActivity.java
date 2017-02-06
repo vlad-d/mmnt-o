@@ -32,6 +32,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
     public static final String TAG = MainActivity.class.getSimpleName();
 
     //Bottom Action Bar
@@ -310,6 +311,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         return notes;
+    }
+
+
+    public void openNote(long noteId) {
+        Intent intent = new Intent(this, NoteActivity.class);
+        intent.putExtra(this.getResources().getString(R.string.key_note_id), noteId);
+        this.startActivity(intent);
     }
 
 

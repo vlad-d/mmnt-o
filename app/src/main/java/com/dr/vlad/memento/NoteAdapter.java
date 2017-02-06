@@ -3,8 +3,10 @@ package com.dr.vlad.memento;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,15 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
+    private static final String DIALOG_FRAGMENT_TAG = "myFragment";
     private Context context;
     private List<Note> notes;
-    private static final String DIALOG_FRAGMENT_TAG = "myFragment";
+    private MainActivity mActivity;
 
     public NoteAdapter(Context context, List<Note> notes) {
         this.context = context;
         this.notes = notes;
+        this.mActivity = (MainActivity)context;
     }
 
     @Override
@@ -70,11 +74,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             public void onClick(View view) {
                 if (note.getProtect() != 0) {
                     FingerprintAuthDialogFragment fragment = new FingerprintAuthDialogFragment();
-                    fragment.show(((Activity)context).getFragmentManager(), DIALOG_FRAGMENT_TAG);
+                    Bundle bundle = new Bundle();
+                    bundle.putLong(context.getResources().getString(R.string.key_note_id), note.getId());
+                    fragment.setArguments(bundle);
+                    fragment.show(((Activity) context).getFragmentManager(), DIALOG_FRAGMENT_TAG);
                 } else {
-                    Intent intent = new Intent(context, NoteActivity.class);
-                    intent.putExtra(context.getResources().getString(R.string.key_note_id), note.getId());
-                    context.startActivity(intent);
+                    mActivity.openNote(note.getId());
                 }
 
             }
@@ -85,6 +90,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     public int getItemCount() {
         return notes.size();
     }
+
+
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {

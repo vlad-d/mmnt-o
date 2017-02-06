@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,6 +62,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             long noteId = bundle.getLong(getResources().getString(R.string.key_note_id));
+            Log.d("FINGKEY", noteId + "NoteActivity");
             note = db.getNote(noteId);
             note.setItems(db.getNoteItems(noteId));
         }
@@ -68,13 +70,6 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         if (note.getId() != null) {
             noteItem = note.getItems().get(0);
-
-            if (note.getProtect() != 0) {
-                //protected
-                FingerprintAuthDialogFragment fragment = new FingerprintAuthDialogFragment();
-                fragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
-            }
-
             String title = note.getTitle();
             if (!title.isEmpty()) {
                 etNoteTitle.setText(note.getTitle());
