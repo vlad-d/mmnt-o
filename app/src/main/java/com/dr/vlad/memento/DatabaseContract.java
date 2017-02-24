@@ -14,14 +14,16 @@ public final class DatabaseContract {
     public static final String[] TABLES_ARRAY = {
             NoteTable.TABLE_NAME,
             NoteItemsTable.TABLE_NAME,
-            LabelsTable.TABLE_NAME
+            LabelsTable.TABLE_NAME,
+            RemindersTable.TABLE_NAME
     };
 
     /* An array list of all the SQL create statements */
     public static final String[] CREATE_TABLE_ARRAY = {
             LabelsTable.CREATE_TABLE,
             NoteTable.CREATE_TABLE,
-            NoteItemsTable.CREATE_TABLE
+            NoteItemsTable.CREATE_TABLE,
+            RemindersTable.CREATE_TABLE
     };
 
     private DatabaseContract() {
@@ -84,6 +86,32 @@ public final class DatabaseContract {
                 + COLUMN_TITLE + " TEXT NOT NULL" + COMMA_SEP
                 + COLUMN_COLOR + " TEXT NOT NULL" + COMMA_SEP
                 + COLUMN_CREATED_AT + " INT" + " );";
+    }
+
+    public static class RemindersTable implements BaseColumns {
+        public static final String TABLE_NAME = "reminders";
+        public static final String COLUMN_NOTE_ID = "note_id";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_DATE_TIME = "date_time";
+        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_DONE = "done";
+        public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_DELETED_AT = "deleted_at";
+
+        public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY" + COMMA_SEP
+                + COLUMN_NOTE_ID + " INT" + COMMA_SEP
+                + COLUMN_TYPE + " INT" + COMMA_SEP
+                + COLUMN_DATE_TIME + " INT" + COMMA_SEP
+                + COLUMN_LOCATION + " TEXT" + COMMA_SEP
+                + COLUMN_DONE + " INT" + COMMA_SEP
+                + COLUMN_CREATED_AT + " INT" + COMMA_SEP
+                + COLUMN_DELETED_AT + " INT"
+                + " );";
+
+
+
+
     }
 
 
