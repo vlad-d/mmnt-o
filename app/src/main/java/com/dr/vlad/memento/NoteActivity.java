@@ -171,6 +171,11 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
                 note.setProtect(1);
                 switchBottomSheetState();
                 break;
+
+            case R.id.tv_bs_action_set_reminder:
+                switchBottomSheetState();
+
+                break;
         }
     }
 
@@ -273,6 +278,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         noteItem.setEditedAt(editedAt.getTimeInMillis());
         db.updateItem(noteItem);
     }
+
 
 
 }

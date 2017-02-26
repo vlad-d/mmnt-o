@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
+import com.dr.vlad.memento.notes.Reminder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,6 +147,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return items;
+    }
+
+    public long insertReminder(Reminder reminder) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.RemindersTable.COLUMN_NOTE_ID, reminder.getNoteId());
+        values.put(DatabaseContract.RemindersTable.COLUMN_TYPE, reminder.getType());
+        values.put(DatabaseContract.RemindersTable.COLUMN_DONE, reminder.getDone());
+        values.put(DatabaseContract.RemindersTable.COLUMN_CREATED_AT, reminder.getCreatedAt());
+        if (reminder.getType() == Reminder.TYPE_DATE_TIME) {
+            values.put(DatabaseContract.RemindersTable.COLUMN_DATE_TIME, reminder.getDateTime());
+        } else {
+            values.put(DatabaseContract.RemindersTable.COLUMN_LATITUDE, reminder.getLatitude());
+            values.put(DatabaseContract.RemindersTable.COLUMN_LONGITUDE, reminder.getLongitude());
+
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.insert(DatabaseContract.RemindersTable.TABLE_NAME, null, values);
     }
 
 

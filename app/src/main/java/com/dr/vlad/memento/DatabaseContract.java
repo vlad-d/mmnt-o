@@ -93,7 +93,8 @@ public final class DatabaseContract {
         public static final String COLUMN_NOTE_ID = "note_id";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_DATE_TIME = "date_time";
-        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_LATITUDE = "latitude";
+        public static final String COLUMN_LONGITUDE = "longitude";
         public static final String COLUMN_DONE = "done";
         public static final String COLUMN_CREATED_AT = "created_at";
         public static final String COLUMN_DELETED_AT = "deleted_at";
@@ -103,7 +104,8 @@ public final class DatabaseContract {
                 + COLUMN_NOTE_ID + " INT" + COMMA_SEP
                 + COLUMN_TYPE + " INT" + COMMA_SEP
                 + COLUMN_DATE_TIME + " INT" + COMMA_SEP
-                + COLUMN_LOCATION + " TEXT" + COMMA_SEP
+                + COLUMN_LATITUDE + " INT" + COMMA_SEP
+                + COLUMN_LONGITUDE + " INT" + COMMA_SEP
                 + COLUMN_DONE + " INT" + COMMA_SEP
                 + COLUMN_CREATED_AT + " INT" + COMMA_SEP
                 + COLUMN_DELETED_AT + " INT"

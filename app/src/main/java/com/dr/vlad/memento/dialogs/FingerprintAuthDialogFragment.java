@@ -1,4 +1,4 @@
-package com.dr.vlad.memento;
+package com.dr.vlad.memento.dialogs;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -24,6 +24,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dr.vlad.memento.FingerprintHandler;
+import com.dr.vlad.memento.MainActivity;
+import com.dr.vlad.memento.R;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
