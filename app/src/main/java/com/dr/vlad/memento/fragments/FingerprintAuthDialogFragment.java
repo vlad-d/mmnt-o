@@ -1,4 +1,4 @@
-package com.dr.vlad.memento.dialogs;
+package com.dr.vlad.memento.fragments;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -14,14 +14,12 @@ import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 

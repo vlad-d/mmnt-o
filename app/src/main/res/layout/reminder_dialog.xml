@@ -1,9 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/ll_reminder_tomorrow_morning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_morning_sun"
+                android:gravity="center"
+                android:text="@string/tomorrow_morning"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16dp" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_tomorrow_morning"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/morning_time"-->
+            <!--android:textColor="@color/colorTextSecondary"-->
+            <!--android:textSize="14dp"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="40"/>-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reminder_at_work"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_work"
+                android:gravity="center"
+                android:text="@string/at_work"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_at_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/set_work"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/lightGrey"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/ll_reminder_pick_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_date_time"
+                android:gravity="center"
+                android:text="@string/pick_date_time"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reminder_pick_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_location"
+                android:gravity="center"
+                android:text="@string/pick_location"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
