@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -30,9 +31,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.dr.vlad.memento.fragments.MyMapFragment;
 import com.dr.vlad.memento.fragments.ReminderDialogFragment;
 import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.Calendar;
 
@@ -40,6 +43,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
     //Note auth
     private static final String DIALOG_FRAGMENT_TAG = "reminderFragment";
+    private static final String DIALOG_FRAGMENT_LOCATION_TAG = "locationFragment";
     private static final int MY_PERMISSIONS_REQUEST_USE_LCOATION = 0;
     DatabaseHelper db;
     Calendar now;
@@ -330,7 +334,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showLocationPicker() {
         if (checkLocationPermission()) {
-
+            MyMapFragment mapFragment = new MyMapFragment();
+            mapFragment.show(this.getFragmentManager(), DIALOG_FRAGMENT_TAG);
         }
     }
 
