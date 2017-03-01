@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Notes");
         setSupportActionBar(toolbar);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         notes = getNotesWithItems();
         TextView tvEmptyList = (TextView) findViewById(R.id.tv_empty_list);
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
 

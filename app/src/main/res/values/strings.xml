@@ -38,11 +38,16 @@
 
     <!--Keys-->
     <string name="key_note_id">activity_note_id</string>
+
+    <!--Reminder-->
     <string name="tomorrow_morning">Tomorrow morning</string>
     <string name="morning_time">8:00 AM</string>
     <string name="pick_date_time"><![CDATA[Pick date & time]]></string>
     <string name="at_work">At work</string>
     <string name="set_work">not set</string>
     <string name="pick_location">Pick location</string>
+    <string name="reminder_positive_button">Set</string>
+    <string name="reminder_negative_button">Cancel</string>
+    <string name="pref_reminder_tile">Reminder settings</string>
 
 </resources>

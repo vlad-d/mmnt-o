@@ -2,15 +2,20 @@ package com.dr.vlad.memento.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dr.vlad.memento.NoteActivity;
 import com.dr.vlad.memento.R;
+import com.dr.vlad.memento.SettingsActivity;
 
 /**
  * Created by drinc on 2/26/2017.
@@ -22,6 +27,8 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
     private LinearLayout llPickDateTime;
     private LinearLayout llWork;
     private LinearLayout llPickLocation;
+    private TextView tvMorningTime;
+    private TextView tvWorkLocation;
     private NoteActivity mActivity;
 
 
@@ -38,6 +45,13 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
         llWork.setOnClickListener(this);
         llPickLocation = (LinearLayout) view.findViewById(R.id.ll_reminder_pick_place);
         llPickLocation.setOnClickListener(this);
+        tvMorningTime = (TextView) view.findViewById(R.id.tv_morning_time);
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String morningTimePref = preferences.getString("pref_key_morning_time", "");
+
+        tvMorningTime.setText(morningTimePref + " AM");
 
         return view;
     }
@@ -75,5 +89,6 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
             mActivity = (NoteActivity) context;
         }
     }
+
 
 }
