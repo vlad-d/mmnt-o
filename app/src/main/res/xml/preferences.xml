@@ -8,5 +8,9 @@
             android:defaultValue="08:30"
             android:key="pref_key_morning_time"
             android:title="Morning" />
+        <com.dr.vlad.memento.fragments.LocationPreference
+            android:key="pref_key_location"
+            android:title="Work"
+            android:summary="not set"/>
     </PreferenceCategory>
 </PreferenceScreen>

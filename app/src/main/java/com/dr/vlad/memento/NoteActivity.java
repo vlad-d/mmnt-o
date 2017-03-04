@@ -36,10 +36,11 @@ import com.dr.vlad.memento.fragments.ReminderDialogFragment;
 import com.dr.vlad.memento.notes.Note;
 import com.dr.vlad.memento.notes.NoteItem;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
 
-public class NoteActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class NoteActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MyMapFragment.OnLocationListener {
 
     //Note auth
     private static final String DIALOG_FRAGMENT_TAG = "reminderFragment";
@@ -378,7 +379,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_USE_LCOATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                    showLocationPicker();
                 } else {
                     Toast.makeText(NoteActivity.this, "Location reminder cannot work without access to location", Toast.LENGTH_SHORT).show();
                 }
@@ -390,6 +391,11 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+    @Override
+    public void onLocationSelected(LatLng location) {
+        Toast.makeText(this, "location:" + location.latitude + location.longitude, Toast.LENGTH_SHORT).show();
     }
 }
 
