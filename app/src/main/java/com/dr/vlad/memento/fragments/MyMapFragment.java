@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
@@ -51,6 +53,7 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     private PlaceAutocompleteAdapter mAdapter;
     private AutoCompleteTextView mAutocompleteView;
     private Place mPlace;
+    private LatLng mLocation;
     private ResultCallback<PlaceBuffer> mUpdateDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
@@ -84,9 +87,14 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(Places.GEO_DATA_API)
-                .build();
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     @Override
@@ -132,14 +140,12 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
 
 
     private void updateMapLocation(LatLng location) {
+        mMap.clear();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        mMap.addMarker(new MarkerOptions()
+                .position(location));
 
-        if (mPlace != null) {
-            mMap.clear();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
-            mMap.addMarker(new MarkerOptions()
-                    .position(mPlace.getLatLng()));
-        }
     }
 
     @Override
@@ -155,7 +161,12 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        final Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Log.i(TAG, lastLocation.getLatitude() + " | " + lastLocation.getLongitude());
+        if (lastLocation != null) {
+            mLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            updateMapLocation(mLocation);
+        }
     }
 
     @Override
