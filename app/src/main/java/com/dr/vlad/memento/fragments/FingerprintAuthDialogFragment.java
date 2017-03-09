@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -49,20 +50,19 @@ import static android.content.Context.KEYGUARD_SERVICE;
 public class FingerprintAuthDialogFragment extends DialogFragment implements FingerprintHandler.Callback {
 
     public static final String KEY_NAME = "note_auth_key";
+    FingerprintHandler handler;
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
     private KeyStore keyStore;
     private KeyGenerator keyGenerator;
     private Cipher cipher;
     private FingerprintManager.CryptoObject cryptoObject;
-
-
     private Button mCancelButton;
     private Button mSecondDialogButton;
     private View mFingerprintContent;
     private View mBackupContent;
     private EditText mPassword;
-//    private ImageView icon;
+    //    private ImageView icon;
 //    private TextView mStatusTextView;
     private CheckBox mUseFingerprintFutureCheckBox;
     private TextView mPasswordDescriptionTextView;
@@ -188,7 +188,7 @@ public class FingerprintAuthDialogFragment extends DialogFragment implements Fin
 
         if (initCipher()) {
             cryptoObject = new FingerprintManager.CryptoObject(cipher);
-            FingerprintHandler handler = new FingerprintHandler(getActivity(), this);
+            handler = new FingerprintHandler(getActivity(), this);
             handler.startAuth(fingerprintManager, cryptoObject);
         }
 
@@ -287,6 +287,15 @@ public class FingerprintAuthDialogFragment extends DialogFragment implements Fin
         if (context instanceof MainActivity) {
             mActivity = (MainActivity) context;
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (handler != null) {
+            handler.stopAuth();
+        }
+        super.onDismiss(dialog);
+
     }
 
     public enum Stage {
