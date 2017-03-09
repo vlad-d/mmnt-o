@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="2">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="16dp"
@@ -15,14 +15,15 @@
 
         <LinearLayout
             android:id="@+id/ll_reminder_tomorrow_morning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:minHeight="120dp">
 
 
             <TextView
@@ -33,7 +34,7 @@
                 android:gravity="center"
                 android:text="@string/tomorrow_morning"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_morning_time"
@@ -43,14 +44,14 @@
                 android:gravity="center"
                 android:text="@string/morning_time"
                 android:textColor="@color/colorTextSecondary"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_reminder_at_work"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -67,7 +68,7 @@
                 android:gravity="center"
                 android:text="@string/at_work"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_at_work"
@@ -77,7 +78,7 @@
                 android:gravity="center"
                 android:text="@string/set_work"
                 android:textColor="@color/colorTextSecondary"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -85,7 +86,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/lightGrey"
         android:orientation="horizontal"
@@ -94,14 +95,16 @@
 
         <LinearLayout
             android:id="@+id/ll_reminder_pick_date_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+
+            android:minHeight="90dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,15 +115,15 @@
                 android:gravity="center"
                 android:text="@string/pick_date_time"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="16dp" />
+                android:textSize="16sp"/>
 
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_reminder_pick_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -137,7 +140,7 @@
                 android:gravity="center"
                 android:text="@string/pick_location"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
 
         </LinearLayout>
