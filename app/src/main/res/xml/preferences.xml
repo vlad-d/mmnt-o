@@ -2,15 +2,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="pref_key_reminder_settings"
+        android:key="@string/key_pref_settings_note"
+        android:title="@string/pref_note_title"></PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/key_pref_settings_reminder"
         android:title="@string/pref_reminder_tile">
         <com.dr.vlad.memento.fragments.TimePickerPreference
             android:defaultValue="08:30"
-            android:key="pref_key_morning_time"
+            android:key="@string/key_pref_morning_time"
             android:title="Morning" />
         <com.dr.vlad.memento.fragments.LocationPreference
-            android:key="pref_key_location"
-            android:title="Work"
-            android:summary="not set"/>
+            android:key="@string/key_pref_location"
+            android:summary="not set"
+            android:title="Work" />
     </PreferenceCategory>
+
 </PreferenceScreen>

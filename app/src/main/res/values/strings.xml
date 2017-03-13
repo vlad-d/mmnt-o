@@ -38,6 +38,11 @@
 
     <!--Keys-->
     <string name="key_note_id">activity_note_id</string>
+    <string name="key_pref_settings_reminder">pref_key_reminder_settings</string>
+    <string name="key_pref_morning_time">pref_key_morning_time</string>
+    <string name="key_pref_location">pref_key_location</string>
+    <string name="key_pref_settings_note">pref_key_note_settings</string>
+    <string name="key_pref_"></string>
 
     <!--Reminder-->
     <string name="tomorrow_morning">Tomorrow morning</string>
@@ -48,6 +53,7 @@
     <string name="pick_location">Pick location</string>
     <string name="reminder_positive_button">Set</string>
     <string name="reminder_negative_button">Cancel</string>
-    <string name="pref_reminder_tile">Reminder settings</string>
+    <string name="pref_reminder_tile">Reminder</string>
+    <string name="pref_note_title">Note</string>
 
 </resources>

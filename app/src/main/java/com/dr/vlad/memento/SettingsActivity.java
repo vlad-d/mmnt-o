@@ -13,6 +13,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class SettingsActivity extends PreferenceActivity{
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

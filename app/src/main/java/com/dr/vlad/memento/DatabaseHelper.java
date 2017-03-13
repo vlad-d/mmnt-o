@@ -167,5 +167,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(DatabaseContract.RemindersTable.TABLE_NAME, null, values);
     }
 
+    public ArrayList<Reminder> getLocationReminders() {
+        ArrayList<Reminder> reminders = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + DatabaseContract.RemindersTable.TABLE_NAME + " WHERE "
+                + DatabaseContract.RemindersTable.COLUMN_TYPE + " = " + Reminder.TYPE_LOCATION + " AND "
+                + DatabaseContract.RemindersTable.COLUMN_DONE + " = 0 AND "
+                + DatabaseContract.RemindersTable.COLUMN_DELETED_AT + " = NULL"
+                + "ORDER BY " + DatabaseContract.RemindersTable.COLUMN_CREATED_AT + " ASC ";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Reminder reminder = new Reminder();
+                reminder.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable._ID)));
+                reminder.setNoteId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_NOTE_ID)));
+                reminder.setType(cursor.getInt(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_TYPE)));
+                reminder.setLatitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LATITUDE)));
+                reminder.setLongitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LONGITUDE)));
+                reminder.setDone(false);
+                reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_CREATED_AT)));
+                reminders.add(reminder);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return reminders;
+    }
+
 
 }
