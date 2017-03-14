@@ -50,7 +50,7 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
         llPickLocation = (LinearLayout) view.findViewById(R.id.ll_reminder_pick_place);
         llPickLocation.setOnClickListener(this);
         tvMorningTime = (TextView) view.findViewById(R.id.tv_morning_time);
-
+        tvWorkLocation = (TextView) view.findViewById(R.id.tv_at_work);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String morningTimePref = preferences.getString(getResources().getString(R.string.key_pref_morning_time), "");
