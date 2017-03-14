@@ -6,16 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dr.vlad.memento.NoteActivity;
 import com.dr.vlad.memento.R;
-import com.dr.vlad.memento.SettingsActivity;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.regex.Pattern;
 
 /**
  * Created by drinc on 2/26/2017.
@@ -30,6 +32,8 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
     private TextView tvMorningTime;
     private TextView tvWorkLocation;
     private NoteActivity mActivity;
+
+    private LatLng workLocation;
 
 
     @Nullable
@@ -49,10 +53,13 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String morningTimePref = preferences.getString("pref_key_morning_time", "");
+        String morningTimePref = preferences.getString(getResources().getString(R.string.key_pref_morning_time), "");
+        String workLocationPref = preferences.getString(getResources().getString(R.string.key_pref_location), "|||");
+        String[] workLocationElements = workLocationPref.split(Pattern.quote("|"));
+        workLocation = new LatLng(Double.parseDouble(workLocationElements[0]), Double.parseDouble(workLocationElements[1]));
 
         tvMorningTime.setText(morningTimePref + " AM");
-
+        tvWorkLocation.setText(workLocationElements[2]);
         return view;
     }
 
@@ -66,7 +73,11 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
                 break;
 
             case R.id.ll_reminder_at_work:
-
+                if (workLocation != null) {
+                    mActivity.onLocationSelected(workLocation);
+                } else {
+                    Toast.makeText(mActivity, R.string.remider_work_location_not_set, Toast.LENGTH_SHORT).show();
+                }
                 dismiss();
                 break;
 

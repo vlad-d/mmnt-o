@@ -55,5 +55,6 @@
     <string name="reminder_negative_button">Cancel</string>
     <string name="pref_reminder_tile">Reminder</string>
     <string name="pref_note_title">Note</string>
+    <string name="remider_work_location_not_set">Work location not set!</string>
 
 </resources>
