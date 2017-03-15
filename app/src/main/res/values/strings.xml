@@ -46,7 +46,7 @@
 
     <!--Reminder-->
     <string name="tomorrow_morning">Tomorrow morning</string>
-    <string name="morning_time">8:00 AM</string>
+    <string name="morning_time">8:30</string>
     <string name="pick_date_time"><![CDATA[Pick date & time]]></string>
     <string name="at_work">At work</string>
     <string name="set_work">not set</string>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,11 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
 
     private LatLng workLocation;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+    }
 
     @Nullable
     @Override
@@ -54,9 +60,13 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String morningTimePref = preferences.getString(getResources().getString(R.string.key_pref_morning_time), "");
-        String workLocationPref = preferences.getString(getResources().getString(R.string.key_pref_location), "|||");
+        String workLocationPref = preferences.getString(getResources().getString(R.string.key_pref_location), "not set|not set|not set");
         String[] workLocationElements = workLocationPref.split(Pattern.quote("|"));
-        workLocation = new LatLng(Double.parseDouble(workLocationElements[0]), Double.parseDouble(workLocationElements[1]));
+
+
+        if (!workLocationElements[0].equalsIgnoreCase("not set")) {
+            workLocation = new LatLng(Double.parseDouble(workLocationElements[0]), Double.parseDouble(workLocationElements[1]));
+        }
 
         tvMorningTime.setText(morningTimePref + " AM");
         tvWorkLocation.setText(workLocationElements[2]);

@@ -8,7 +8,7 @@
         android:key="@string/key_pref_settings_reminder"
         android:title="@string/pref_reminder_tile">
         <com.dr.vlad.memento.fragments.TimePickerPreference
-            android:defaultValue="08:30"
+            android:defaultValue="@string/morning_time"
             android:key="@string/key_pref_morning_time"
             android:title="Morning" />
         <com.dr.vlad.memento.fragments.LocationPreference
