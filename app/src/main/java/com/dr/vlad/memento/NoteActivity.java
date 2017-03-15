@@ -66,6 +66,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     private NoteItem noteItem = new NoteItem();
     private Calendar calendar;
 
+    private LatLng reminderLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -395,7 +397,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLocationSelected(LatLng location) {
-        Toast.makeText(this, "location:" + location.latitude + location.longitude, Toast.LENGTH_SHORT).show();
+        this.reminderLocation = location;
     }
 }
 

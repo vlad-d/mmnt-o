@@ -39,7 +39,7 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+//        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
     }
 
     @Nullable
@@ -58,8 +58,8 @@ public class ReminderDialogFragment extends DialogFragment implements View.OnCli
         tvMorningTime = (TextView) view.findViewById(R.id.tv_morning_time);
         tvWorkLocation = (TextView) view.findViewById(R.id.tv_at_work);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String morningTimePref = preferences.getString(getResources().getString(R.string.key_pref_morning_time), "");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String morningTimePref = preferences.getString(getResources().getString(R.string.key_pref_morning_time), getResources().getString(R.string.morning_time));
         String workLocationPref = preferences.getString(getResources().getString(R.string.key_pref_location), "not set|not set|not set");
         String[] workLocationElements = workLocationPref.split(Pattern.quote("|"));
 
