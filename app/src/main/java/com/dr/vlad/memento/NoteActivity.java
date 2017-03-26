@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -33,15 +32,16 @@ import android.widget.Toast;
 
 import com.dr.vlad.memento.fragments.MyMapFragment;
 import com.dr.vlad.memento.fragments.ReminderDialogFragment;
-import com.dr.vlad.memento.notes.Note;
-import com.dr.vlad.memento.notes.NoteItem;
-import com.google.android.gms.maps.MapFragment;
+import com.dr.vlad.memento.model.Note;
+import com.dr.vlad.memento.model.NoteItem;
+import com.dr.vlad.memento.model.Reminder;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
 
 public class NoteActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MyMapFragment.OnLocationListener {
 
+    public static final String TAG = NoteActivity.class.getSimpleName();
     //Note auth
     private static final String DIALOG_FRAGMENT_TAG = "reminderFragment";
     private static final String DIALOG_FRAGMENT_LOCATION_TAG = "locationFragment";
@@ -66,6 +66,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     private NoteItem noteItem = new NoteItem();
     private Calendar calendar;
 
+    private Reminder reminder = new Reminder();
     private LatLng reminderLocation;
 
     @Override
@@ -83,7 +84,6 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             long noteId = bundle.getLong(getResources().getString(R.string.key_note_id));
-            Log.d("FINGKEY", noteId + "NoteActivity");
             note = db.getNote(noteId);
             note.setItems(db.getNoteItems(noteId));
         }
@@ -91,6 +91,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         if (note.getId() != null) {
             noteItem = note.getItems().get(0);
+            reminder = db.getNoteReminder(note.getId());
+            Log.i(TAG, "reminder id:" + reminder.getId());
             String title = note.getTitle();
             if (!title.isEmpty()) {
                 etNoteTitle.setText(note.getTitle());
@@ -265,8 +267,29 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             editItem();
         }
 
+        //test location reminder
+        saveRemidner();
+
     }
 
+    private void saveRemidner() {
+        if (reminder.getId() == null) {
+            storeReminder();
+        } else {
+            editReminder();
+        }
+
+        switch (reminder.getType()) {
+            case Reminder.TYPE_LOCATION:
+                if (reminder.getLatitude() != null && reminder.getLongitude() != null) {
+                    final GeofenceBuilder geofenceBuilder = new GeofenceBuilder(this, reminder);
+                }
+                break;
+        }
+
+//        startService(new Intent(NoteActivity.this, LocationService.class));
+
+    }
 
     private void storeNote() {
         now = Calendar.getInstance();
@@ -302,6 +325,29 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         Calendar editedAt = Calendar.getInstance();
         noteItem.setEditedAt(editedAt.getTimeInMillis());
         db.updateItem(noteItem);
+    }
+
+    private void storeReminder() {
+        reminder = new Reminder();
+        reminder.setNoteId(note.getId());
+        reminder.setDone(false);
+        reminder.setCreatedAt(Calendar.getInstance().getTimeInMillis());
+        if (reminderLocation != null) {
+            reminder.setLongitude(reminderLocation.longitude);
+            reminder.setLatitude(reminderLocation.latitude);
+        }
+
+        //// TODO: 3/20/2017 date time reminder
+
+        reminder.setType(Reminder.TYPE_LOCATION);
+
+        db.insertReminder(reminder);
+
+    }
+
+    private void editReminder() {
+        //// TODO: 3/20/2017 date time reminder
+
     }
 
 
@@ -398,6 +444,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onLocationSelected(LatLng location) {
         this.reminderLocation = location;
+        Toast.makeText(this, "Location reminder set", Toast.LENGTH_SHORT).show();
     }
+
 }
 

@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.dr.vlad.memento.notes.Reminder;
+import com.dr.vlad.memento.model.Reminder;
 
 import java.util.ArrayList;
 
@@ -15,38 +15,30 @@ import java.util.ArrayList;
  */
 
 public class LocationService extends Service {
+    public static final String TAG = "LOCATION SERVICE";
     private DatabaseHelper db;
     private ArrayList<Reminder> reminders;
 
 
     @Override
     public void onCreate() {
+        Log.i(TAG, "onCreate");
         db = new DatabaseHelper(LocationService.this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("LOCATION SERVICE", "onStartCommand");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 reminders = db.getLocationReminders();
 
-//                simulare
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
+                stopSelf();
             }
 
         }).start();
-
-        for (Reminder reminder : reminders) {
-            Log.i("LOCATION SERVICE:", reminder.getLatitude() + " : " + reminder.getLongitude());
-        }
-
-
-
 
         return START_REDELIVER_INTENT;
     }

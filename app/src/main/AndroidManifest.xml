@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -35,7 +36,14 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name="com.dr.vlad.memento.LocationService"
+            android:enabled="true" />
+
+        <service android:name=".GeofenceTransitionsIntentService"/>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

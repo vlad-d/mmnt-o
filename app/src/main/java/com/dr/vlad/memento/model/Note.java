@@ -1,4 +1,4 @@
-package com.dr.vlad.memento.notes;
+package com.dr.vlad.memento.model;
 
 import java.util.List;
 

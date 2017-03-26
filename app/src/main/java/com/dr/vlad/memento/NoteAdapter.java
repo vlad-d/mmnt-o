@@ -12,8 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dr.vlad.memento.fragments.FingerprintAuthDialogFragment;
-import com.dr.vlad.memento.notes.Note;
-import com.dr.vlad.memento.notes.NoteItem;
+import com.dr.vlad.memento.model.Note;
+import com.dr.vlad.memento.model.NoteItem;
 
 import java.util.List;
 

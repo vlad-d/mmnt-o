@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dr.vlad.memento.GeofenceBuilder;
 import com.dr.vlad.memento.PlaceAutocompleteAdapter;
 import com.dr.vlad.memento.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,6 +37,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -146,7 +150,13 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
         mMap.addMarker(new MarkerOptions()
                 .position(location));
-
+//        CircleOptions circleOptions = new CircleOptions()
+//                .center(location)
+//                .strokeColor(R.color.colorAccent)
+//                .fillColor(Color.argb(100, 150,150,150))
+//                .radius(GeofenceBuilder.GEOFENCE_RADIUS);
+//
+//        mMap.addCircle(circleOptions);
     }
 
     @Override
@@ -163,7 +173,7 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         final Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        Log.i(TAG, lastLocation.getLatitude() + " | " + lastLocation.getLongitude());
+//        Log.i(TAG, lastLocation.getLatitude() + " | " + lastLocation.getLongitude());
         if (lastLocation != null) {
             mLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             updateMapLocation(mLocation);
@@ -248,7 +258,7 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     }
 
     public interface OnLocationListener {
-        public void onLocationSelected(LatLng location);
+        void onLocationSelected(LatLng location);
     }
 
 

@@ -5,10 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.dr.vlad.memento.notes.Note;
-import com.dr.vlad.memento.notes.NoteItem;
-import com.dr.vlad.memento.notes.Reminder;
+import com.dr.vlad.memento.model.Note;
+import com.dr.vlad.memento.model.NoteItem;
+import com.dr.vlad.memento.model.Reminder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TAG = DatabaseHelper.class.getSimpleName();
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "MementoDatabase.db";
 
 
@@ -153,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.RemindersTable.COLUMN_NOTE_ID, reminder.getNoteId());
         values.put(DatabaseContract.RemindersTable.COLUMN_TYPE, reminder.getType());
-        values.put(DatabaseContract.RemindersTable.COLUMN_DONE, reminder.getDone());
+        values.put(DatabaseContract.RemindersTable.COLUMN_DONE, reminder.getDone() ? 1 : 0);
         values.put(DatabaseContract.RemindersTable.COLUMN_CREATED_AT, reminder.getCreatedAt());
         if (reminder.getType() == Reminder.TYPE_DATE_TIME) {
             values.put(DatabaseContract.RemindersTable.COLUMN_DATE_TIME, reminder.getDateTime());
@@ -164,16 +165,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.insert(DatabaseContract.RemindersTable.TABLE_NAME, null, values);
+        long id = db.insert(DatabaseContract.RemindersTable.TABLE_NAME, null, values);
+        Log.d(TAG, "reminder id" + id);
+        return id;
+
     }
+
+    public Reminder getNoteReminder(long noteId) {
+        Reminder reminder = new Reminder();
+        String selectQuery = "SELECT * FROM " + DatabaseContract.RemindersTable.TABLE_NAME + " WHERE "
+                + DatabaseContract.RemindersTable.COLUMN_NOTE_ID + " = " + noteId
+                + " AND " + DatabaseContract.RemindersTable.COLUMN_DELETED_AT + " IS NULL"
+                + " ORDER BY " + DatabaseContract.RemindersTable.COLUMN_CREATED_AT + " DESC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            reminder.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable._ID)));
+            reminder.setLongitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LONGITUDE)));
+            reminder.setLatitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LATITUDE)));
+            reminder.setDateTime(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DATE_TIME)));
+            reminder.setDone(cursor.getInt(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DONE)) != 0);
+            reminder.setType(cursor.getInt(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_TYPE)));
+            reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_CREATED_AT)));
+            reminder.setDeletedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DELETED_AT)));
+        }
+
+        return reminder;
+    }
+
+    public Reminder getReminder(long reminderId) {
+        Reminder reminder = new Reminder();
+        String selectQuery = "SELECT * FROM " + DatabaseContract.RemindersTable.TABLE_NAME + " WHERE "
+                + DatabaseContract.RemindersTable._ID + " = " + reminderId
+                + " AND " + DatabaseContract.RemindersTable.COLUMN_DELETED_AT + " IS NULL"
+                + " ORDER BY " + DatabaseContract.RemindersTable.COLUMN_CREATED_AT + " DESC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            reminder.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable._ID)));
+            reminder.setLongitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LONGITUDE)));
+            reminder.setLatitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LATITUDE)));
+            reminder.setDateTime(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DATE_TIME)));
+            reminder.setDone(cursor.getInt(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DONE)) != 0);
+            reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_CREATED_AT)));
+            reminder.setDeletedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_DELETED_AT)));
+        }
+
+        return reminder;
+    }
+
 
     public ArrayList<Reminder> getLocationReminders() {
         ArrayList<Reminder> reminders = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + DatabaseContract.RemindersTable.TABLE_NAME + " WHERE "
                 + DatabaseContract.RemindersTable.COLUMN_TYPE + " = " + Reminder.TYPE_LOCATION + " AND "
                 + DatabaseContract.RemindersTable.COLUMN_DONE + " = 0 AND "
-                + DatabaseContract.RemindersTable.COLUMN_DELETED_AT + " = NULL"
-                + "ORDER BY " + DatabaseContract.RemindersTable.COLUMN_CREATED_AT + " ASC ";
+                + DatabaseContract.RemindersTable.COLUMN_DELETED_AT + " IS NULL"
+                + " ORDER BY " + DatabaseContract.RemindersTable.COLUMN_CREATED_AT + " ASC ";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -182,8 +230,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 reminder.setId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable._ID)));
                 reminder.setNoteId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_NOTE_ID)));
                 reminder.setType(cursor.getInt(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_TYPE)));
-                reminder.setLatitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LATITUDE)));
-                reminder.setLongitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LONGITUDE)));
+                reminder.setLatitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LATITUDE)));
+                reminder.setLongitude(cursor.getDouble(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_LONGITUDE)));
                 reminder.setDone(false);
                 reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.RemindersTable.COLUMN_CREATED_AT)));
                 reminders.add(reminder);

@@ -1,4 +1,4 @@
-package com.dr.vlad.memento.notes;
+package com.dr.vlad.memento.model;
 
 /**
  * Created by drinc on 2/26/2017.
@@ -11,8 +11,8 @@ public class Reminder {
     private Long noteId;
     private Integer type;
     private Long dateTime;
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private Boolean done;
     private Long createdAt;
     private Long deletedAt;
@@ -52,19 +52,19 @@ public class Reminder {
         this.dateTime = dateTime;
     }
 
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

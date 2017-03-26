@@ -43,6 +43,7 @@
     <string name="key_pref_location">pref_key_location</string>
     <string name="key_pref_settings_note">pref_key_note_settings</string>
     <string name="key_pref_"></string>
+    <string name="key_intent_geofence_reminder">intent_geofence_reminder</string>
 
     <!--Reminder-->
     <string name="tomorrow_morning">Tomorrow morning</string>

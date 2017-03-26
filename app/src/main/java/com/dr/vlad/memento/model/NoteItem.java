@@ -1,4 +1,4 @@
-package com.dr.vlad.memento.notes;
+package com.dr.vlad.memento.model;
 
 /**
  * Created by drinc on 1/5/2017.
