@@ -2,61 +2,50 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:showIn="@layout/app_bar_main">
 
 
     <LinearLayout
         android:id="@+id/actions_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:visibility="invisible">
+        android:layout_height="42dp"
+        android:background="@drawable/bottom_actions_shape"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_margin="23dp"
+        android:visibility="invisible"
+        android:elevation="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="72dp"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <ImageButton
                 android:id="@+id/btn_create_note"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu_notes"
-                android:tint="@color/colorPrimary" />
+                android:src="@drawable/ic_edit_white_24dp" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/btn_create_checklist"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
+                android:id="@+id/btn_create_from_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_action_add_checklist"
-                android:tint="@color/colorPrimary" />
+                android:src="@drawable/ic_camera_alt_white_24dp" />
 
-            <ImageButton
-                android:id="@+id/btn_b_3"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_android"
-                android:tint="@color/colorPrimary" />
-
-            <ImageButton
-                android:id="@+id/btn_b_4"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_android"
-                android:tint="@color/colorPrimary" />
 
         </LinearLayout>
     </LinearLayout>
@@ -65,7 +54,7 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
+        android:layout_gravity="center_horizontal|bottom"
         android:layout_margin="@dimen/fab_margin"
         app:borderWidth="0dp"
         app:elevation="4dp"

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton fab;
     View bottomActionsContainer;
-    View btnCreateNote, btnCreateChecklist, btnBAction3, btnBAction4;
+    View btnCreateNote, btnCreateFromCamera, btnBAction3, btnBAction4;
 
     List<Note> notes;
     RecyclerView rvMainRecyclerView;
@@ -166,8 +166,9 @@ public class MainActivity extends AppCompatActivity
 
     private void revealBottomNavigation() {
 
-        int cx = (fab.getLeft() + fab.getRight()) / 2;
-        int cy = (fab.getTop() + fab.getBottom()) / 2;
+        int cx = bottomActionsContainer.getMeasuredWidth() / 2;
+        int cy = bottomActionsContainer.getMeasuredHeight() / 2;
+
         float finalRadius = (float) Math.hypot(cx, cy);
 
         //Nav animation
@@ -185,13 +186,13 @@ public class MainActivity extends AppCompatActivity
 
         //Fab elevation animator
         ValueAnimator fabEleveationAnimator = ValueAnimator.ofFloat(4, 0);
-        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float value = (float) valueAnimator.getAnimatedValue();
-                fab.setElevation(value);
-            }
-        });
+//        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                float value = (float) valueAnimator.getAnimatedValue();
+//                fab.setElevation(value);
+//            }
+//        });
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(navigationAnimator).with(fabRotationAnimator).with(fabEleveationAnimator);
@@ -206,8 +207,8 @@ public class MainActivity extends AppCompatActivity
 
     private void hideBottomNavigation() {
 
-        int cx = (fab.getLeft() + fab.getRight()) / 2;
-        int cy = (fab.getTop() + fab.getBottom()) / 2;
+        int cx = bottomActionsContainer.getMeasuredWidth() / 2;
+        int cy = bottomActionsContainer.getMeasuredHeight() / 2;
         float initialRadius = (float) Math.hypot(cx, cy);
 
         //Nav animation
@@ -232,13 +233,13 @@ public class MainActivity extends AppCompatActivity
 
         //Fab elevation animator
         ValueAnimator fabEleveationAnimator = ValueAnimator.ofFloat(0, 4);
-        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float value = (float) valueAnimator.getAnimatedValue();
-                fab.setElevation(value);
-            }
-        });
+//        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                float value = (float) valueAnimator.getAnimatedValue();
+//                fab.setElevation(value);
+//            }
+//        });
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(navigationAnimator).with(fabRotationAnimator).with(fabEleveationAnimator);
@@ -262,10 +263,10 @@ public class MainActivity extends AppCompatActivity
     private void setBottomActionBarViews() {
         btnCreateNote = findViewById(R.id.btn_create_note);
         btnCreateNote.setOnClickListener(this);
-        btnCreateChecklist = findViewById(R.id.btn_create_checklist);
-        btnCreateChecklist.setOnClickListener(this);
-        btnBAction3 = findViewById(R.id.btn_b_3);
-        btnBAction4 = findViewById(R.id.btn_b_4);
+        btnCreateFromCamera = findViewById(R.id.btn_create_from_camera);
+//        btnCreateFromCamera.setOnClickListener(this);
+//        btnBAction3 = findViewById(R.id.btn_b_3);
+//        btnBAction4 = findViewById(R.id.btn_b_4);
         bottomActionsContainer = findViewById(R.id.actions_container);
     }
 
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(this, NoteActivity.class));
                 break;
 
-            case R.id.btn_create_checklist:
+            case R.id.btn_create_from_camera:
                 startActivity(new Intent(this, CreateChecklistActivity.class));
                 break;
 
