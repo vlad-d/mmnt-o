@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
                 fab.setRotation(value);
             }
         });
-
+        
         //Fab elevation animator
         ValueAnimator fabEleveationAnimator = ValueAnimator.ofFloat(4, 0);
 //        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
