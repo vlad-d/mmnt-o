@@ -11,87 +11,120 @@ import android.util.Log;
 import com.dr.vlad.memento.model.Reminder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.gcm.PendingCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by drinc on 3/25/2017.
  */
 
-public class GeofenceBuilder implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback {
+public class GeofenceBuilder {
 
     public static final String TAG = GeofenceBuilder.class.getSimpleName();
     /**
      * Geofence radius in meters
      */
-    public static final float GEOFENCE_RADIUS = 50f;
+    public static final float GEOFENCE_RADIUS = 100;
     /**
      * Geofence dwell time in milliseconds
      */
-    public static final int GEOFENCE_DWELL_TIME = 500;
-    Context context;
-    GoogleApiClient mGoogleApiClient;
-    Reminder reminder;
+    public static final int GEOFENCE_DWELL_TIME = 2 * 60 * 1000;
+
+    PendingIntent mGeofencePendingIntent;
+    private Context context;
+    private GoogleApiClient mGoogleApiClient;
+    private Reminder reminder;
+    private List<Geofence> mGeofenceList;
+    private GoogleApiClient.ConnectionCallbacks connectionAddListener = new GoogleApiClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+            Log.i(TAG, "onConnected");
+
+            try {
+                LocationServices.GeofencingApi.addGeofences(
+                        mGoogleApiClient,
+                        getGeofencingRequest(),
+                        getGeofencePendingIntent()
+                ).setResultCallback(new ResultCallback<Status>() {
+
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()) {
+                            Log.i(TAG, "Saving Geofence");
+
+                        } else {
+                            Log.e(TAG, "Registering geofence failed: " + status.getStatusMessage() +
+                                    " : " + status.getStatusCode());
+                        }
+                    }
+                });
+
+            } catch (SecurityException securityException) {
+                // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+                Log.e(TAG, "Error");
+            }
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            Log.i(TAG, "onConnectionSuspended");
+        }
+    };
+    private GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.e(TAG, "onConnectionFailed");
+        }
+    };
 
     public GeofenceBuilder(Context context, Reminder reminder) {
         this.context = context;
         this.reminder = reminder;
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(context)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
+        mGeofenceList = new ArrayList<Geofence>();
 
+        createGeofences();
+        initGoogleApiClient();
+    }
+
+    private void initGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(connectionAddListener)
+                .addOnConnectionFailedListener(connectionFailedListener)
+                .build();
         mGoogleApiClient.connect();
     }
 
-    @SuppressWarnings("MissingPermission")
-    private void addGeofence(Reminder reminder) {
+    public void createGeofences() {
         Geofence geofence = new Geofence.Builder()
-                .setRequestId(String.valueOf(reminder.getId()))
-                .setCircularRegion(reminder.getLatitude(), reminder.getLatitude(), GEOFENCE_RADIUS)
+                .setRequestId(reminder.getId().toString())
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setCircularRegion(reminder.getLatitude(), reminder.getLongitude(), GEOFENCE_RADIUS)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
                 .setLoiteringDelay(GEOFENCE_DWELL_TIME)
                 .build();
 
-        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .addGeofence(geofence)
-                .build();
+        mGeofenceList.add(geofence);
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_DWELL);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        if (mGeofencePendingIntent != null) {
+            return mGeofencePendingIntent;
+        }
         Intent intent = new Intent(context, GeofenceTransitionsIntentService.class);
-        intent.putExtra(context.getResources().getString(R.string.key_intent_geofence_reminder), reminder.getId());
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, geofencingRequest, pendingIntent).setResultCallback(this);
-
-    }
-
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        addGeofence(reminder);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onResult(@NonNull Result result) {
-        Log.i(TAG, "Geofence added");
+        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

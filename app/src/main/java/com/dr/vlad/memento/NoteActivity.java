@@ -282,7 +282,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         switch (reminder.getType()) {
             case Reminder.TYPE_LOCATION:
                 if (reminder.getLatitude() != null && reminder.getLongitude() != null) {
-                    final GeofenceBuilder geofenceBuilder = new GeofenceBuilder(this, reminder);
+                    GeofenceBuilder geofenceBuilder = new GeofenceBuilder(this, reminder);
                 }
                 break;
         }
@@ -341,7 +341,8 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
 
         reminder.setType(Reminder.TYPE_LOCATION);
 
-        db.insertReminder(reminder);
+        long reminderId = db.insertReminder(reminder);
+        reminder.setId(reminderId);
 
     }
 

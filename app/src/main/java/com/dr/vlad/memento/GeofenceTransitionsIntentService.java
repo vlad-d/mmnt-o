@@ -20,7 +20,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     public GeofenceTransitionsIntentService() {
         super(TAG);
+        Log.i(TAG, TAG);
     }
+
 
     private static String getErrorString(int errorCode) {
         switch (errorCode) {
@@ -37,6 +39,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        Log.i(TAG, "onHandleIntent");
 
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
@@ -47,11 +50,14 @@ public class GeofenceTransitionsIntentService extends IntentService {
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-            DatabaseHelper db = new DatabaseHelper(this);
             for (Geofence geofence : triggeringGeofences) {
-                Reminder reminder = db.getReminder(Long.parseLong(geofence.getRequestId()));
-                Log.i(TAG, "Geofence fired: reminder: " + reminder.getType());
+                int geofenceRequestId = Integer.valueOf(geofence.getRequestId());
+                Log.i(TAG, "Geofence fired: id: " + geofenceRequestId);
+                Notificator notificator = new Notificator(this, Notificator.Type.LOCATION);
+                notificator.sendNotification(geofenceRequestId);
             }
         }
     }
+
+
 }

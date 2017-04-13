@@ -241,5 +241,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return reminders;
     }
 
+    public Note getNoteByReminderId(long reminderId) {
+        Note note = new Note();
+        String selectQuery = "SELECT * FROM " + DatabaseContract.NoteTable.TABLE_NAME + " AS N "
+                + "LEFT OUTER JOIN " + DatabaseContract.RemindersTable.TABLE_NAME + " AS R "
+                + " ON " + "N." + DatabaseContract.NoteTable._ID + " = R." + DatabaseContract.RemindersTable.COLUMN_NOTE_ID
+                + " WHERE " + " R." + DatabaseContract.RemindersTable._ID + " = " + reminderId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            note.setId(cursor.getLong(0));
+            note.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_TITLE)));
+            note.setProtect(cursor.getInt(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_PROTECTED)));
+            note.setCreatedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_CREATED_AT)));
+            note.setDeletedAt(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_DELETED_AT)));
+            note.setLabelId(cursor.getLong(cursor.getColumnIndex(DatabaseContract.NoteTable.COLUMN_LABEL_ID)));
+        }
+        return note;
+    }
+
 
 }

@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,7 +33,7 @@ import com.dr.vlad.memento.model.NoteItem;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends FragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -44,9 +47,11 @@ public class MainActivity extends AppCompatActivity
     View bottomActionsContainer;
     View btnCreateNote, btnCreateFromCamera, btnBAction3, btnBAction4;
 
-    List<Note> notes;
-    RecyclerView rvMainRecyclerView;
-    RecyclerView.Adapter adapter;
+//    List<Note> notes;
+//    RecyclerView rvMainRecyclerView;
+//    RecyclerView.Adapter adapter;
+
+    private Bundle args = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +59,31 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Notes");
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        notes = getNotesWithItems();
-        TextView tvEmptyList = (TextView) findViewById(R.id.tv_empty_list);
-        if (notes.isEmpty()) {
-            if (tvEmptyList.getVisibility() != View.VISIBLE) {
-                tvEmptyList.setVisibility(View.VISIBLE);
+//        notes = getNotesWithItems();
+//        TextView tvEmptyList = (TextView) findViewById(R.id.tv_empty_list);
+//        if (notes.isEmpty()) {
+//            if (tvEmptyList.getVisibility() != View.VISIBLE) {
+//                tvEmptyList.setVisibility(View.VISIBLE);
+//            }
+//        } else {
+//            tvEmptyList.setVisibility(View.GONE);
+//            rvMainRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
+//            rvMainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//            adapter = new NoteAdapter(MainActivity.this, notes);
+//            rvMainRecyclerView.setAdapter(adapter);
+//        }
+
+        if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
             }
-        } else {
-            tvEmptyList.setVisibility(View.GONE);
-            rvMainRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
-            rvMainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            adapter = new NoteAdapter(MainActivity.this, notes);
-            rvMainRecyclerView.setAdapter(adapter);
+            replaceFragment(NotesFragment.class, args);
         }
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -323,5 +336,22 @@ public class MainActivity extends AppCompatActivity
         this.startActivity(intent);
     }
 
+
+    public void replaceFragment(Class fragmentClass, Bundle args) {
+        Fragment fragment = null;
+        try {
+
+            fragment = (Fragment) fragmentClass.newInstance();
+            if (args != null) {
+                fragment.setArguments(args);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+
+    }
 
 }

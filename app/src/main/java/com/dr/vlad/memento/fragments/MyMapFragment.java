@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +18,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.dr.vlad.memento.GeofenceBuilder;
 import com.dr.vlad.memento.PlaceAutocompleteAdapter;
 import com.dr.vlad.memento.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,9 +34,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,7 +52,6 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     private MapView mapView;
     private PlaceAutocompleteAdapter mAdapter;
     private AutoCompleteTextView mAutocompleteView;
-    private Place mPlace;
     private LatLng mLocation;
     private ResultCallback<PlaceBuffer> mUpdateDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
@@ -68,8 +62,9 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
                 return;
             }
 
-            mPlace = places.get(0);
-            updateMapLocation(mPlace.getLatLng());
+            Place mPlace = places.get(0);
+            mLocation = mPlace.getLatLng();
+            updateMapLocation(true);
         }
     };
     private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
@@ -144,12 +139,14 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     }
 
 
-    private void updateMapLocation(LatLng location) {
+    private void updateMapLocation(boolean animate) {
         mMap.clear();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocation, 18));
+        if (animate) {
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        }
         mMap.addMarker(new MarkerOptions()
-                .position(location));
+                .position(mLocation));
 //        CircleOptions circleOptions = new CircleOptions()
 //                .center(location)
 //                .strokeColor(R.color.colorAccent)
@@ -172,11 +169,14 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected");
         final Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//        Log.i(TAG, lastLocation.getLatitude() + " | " + lastLocation.getLongitude());
         if (lastLocation != null) {
+            Log.i(TAG, lastLocation.getLatitude() + " | " + lastLocation.getLongitude());
             mLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            updateMapLocation(mLocation);
+            updateMapLocation(true);
+        } else {
+            Log.i(TAG, "location not working... :(");
         }
     }
 
@@ -199,6 +199,13 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mLocation = latLng;
+                updateMapLocation(false);
+            }
+        });
 //        mMap.setMyLocationEnabled(true);
 
     }
@@ -214,8 +221,8 @@ public class MyMapFragment extends DialogFragment implements GoogleApiClient.Con
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mPlace != null) {
-                        mCallback.onLocationSelected(mPlace.getLatLng());
+                    if (mLocation != null) {
+                        mCallback.onLocationSelected(mLocation);
                         dialog.dismiss();
                     } else {
                         Toast.makeText(getContext(), "Please select a place", Toast.LENGTH_SHORT).show();
