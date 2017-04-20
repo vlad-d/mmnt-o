@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,24 +15,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.TextView;
 
-import com.dr.vlad.memento.model.Note;
-import com.dr.vlad.memento.model.NoteItem;
+import com.dr.vlad.memento.fragments.NotesFragment;
+import com.dr.vlad.memento.fragments.ReminderNotesFragment;
 
-import java.util.List;
-
-public class MainActivity extends FragmentActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -42,6 +35,8 @@ public class MainActivity extends FragmentActivity
     public static final int BAB_STATE_COLLAPSED = 0;
     public static final int BAB_STATE_EXPANDED = 1;
     public int babState = BAB_STATE_COLLAPSED;
+
+    Toolbar toolbar;
 
     FloatingActionButton fab;
     View bottomActionsContainer;
@@ -57,26 +52,11 @@ public class MainActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Notes");
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-//        notes = getNotesWithItems();
-//        TextView tvEmptyList = (TextView) findViewById(R.id.tv_empty_list);
-//        if (notes.isEmpty()) {
-//            if (tvEmptyList.getVisibility() != View.VISIBLE) {
-//                tvEmptyList.setVisibility(View.VISIBLE);
-//            }
-//        } else {
-//            tvEmptyList.setVisibility(View.GONE);
-//            rvMainRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
-//            rvMainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//            adapter = new NoteAdapter(MainActivity.this, notes);
-//            rvMainRecyclerView.setAdapter(adapter);
-//        }
-
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -99,7 +79,6 @@ public class MainActivity extends FragmentActivity
 
 
         setBottomActionBarViews();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -155,7 +134,6 @@ public class MainActivity extends FragmentActivity
 
         //noinspection SimplifiableIfStatement
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -166,9 +144,17 @@ public class MainActivity extends FragmentActivity
         int id = item.getItemId();
 
         switch (id) {
+
+            case R.id.nav_notes:
+                replaceFragment(NotesFragment.class, args);
+                break;
+            case R.id.nav_notes_reminder:
+                replaceFragment(ReminderNotesFragment.class, args);
+                break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -196,7 +182,7 @@ public class MainActivity extends FragmentActivity
                 fab.setRotation(value);
             }
         });
-        
+
         //Fab elevation animator
         ValueAnimator fabEleveationAnimator = ValueAnimator.ofFloat(4, 0);
 //        fabEleveationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -298,36 +284,36 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    private void closeAppDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(R.string.message_close_app)
-                .setPositiveButton(R.string.close_app, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create();
-        dialog.show();
-    }
+//    private void closeAppDialog() {
+//        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(R.string.message_close_app)
+//                .setPositiveButton(R.string.close_app, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        finish();
+//                    }
+//                })
+//                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                })
+//                .create();
+//        dialog.show();
+//    }
 
-    private List<Note> getNotesWithItems() {
-        DatabaseHelper db = new DatabaseHelper(this);
-        List<Note> notes = db.getNotes();
-        if (!notes.isEmpty()) {
-            for (Note note : notes) {
-                List<NoteItem> items = db.getNoteItems(note.getId());
-                note.setItems(items);
-            }
-        }
-
-        return notes;
-    }
+//    private List<Note> getNotesWithItems() {
+//        DatabaseHelper db = new DatabaseHelper(this);
+//        List<Note> notes = db.getNotes();
+//        if (!notes.isEmpty()) {
+//            for (Note note : notes) {
+//                List<NoteItem> items = db.getNoteItems(note.getId());
+//                note.setItems(items);
+//            }
+//        }
+//
+//        return notes;
+//    }
 
 
     public void openNote(long noteId) {
@@ -351,7 +337,11 @@ public class MainActivity extends FragmentActivity
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
-
     }
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
 
 }

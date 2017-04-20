@@ -8,9 +8,10 @@
             android:icon="@drawable/ic_menu_notes"
             android:title="Notes" />
         <item
-            android:id="@+id/nav_important_notes"
+            android:id="@+id/nav_notes_reminder"
             android:icon="@drawable/ic_menu_priority"
-            android:title="Priority notes" />
+            android:title="Reminders" />
+
     </group>
 
     <item android:title="">

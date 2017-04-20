@@ -28,7 +28,7 @@
         <activity
             android:name=".NoteActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"
@@ -46,7 +46,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAo5f1JpuMSDR8ws1LNcqHitFXHmZT-oGs" />
 
-        <activity android:name=".NotesFragment"></activity>
+        <activity android:name=".fragments.NotesFragment" />
+        <activity android:name=".fragments.ReminderNotesFragment"></activity>
     </application>
 
 </manifest>

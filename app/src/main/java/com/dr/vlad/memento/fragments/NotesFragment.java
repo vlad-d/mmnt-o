@@ -1,5 +1,6 @@
-package com.dr.vlad.memento;
+package com.dr.vlad.memento.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.dr.vlad.memento.DatabaseHelper;
+import com.dr.vlad.memento.MainActivity;
+import com.dr.vlad.memento.NoteAdapter;
+import com.dr.vlad.memento.R;
 import com.dr.vlad.memento.model.Note;
+import com.dr.vlad.memento.model.NoteItem;
 
 import java.util.List;
 
@@ -20,6 +26,7 @@ public class NotesFragment extends Fragment {
     List<Note> notes;
     RecyclerView rvMainRecyclerView;
     RecyclerView.Adapter adapter;
+
 
 
     @Override
@@ -47,5 +54,26 @@ public class NotesFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            ((MainActivity) context).setToolbarTitle("Notes");
+        }
+    }
+
+    private List<Note> getNotesWithItems() {
+        DatabaseHelper db = new DatabaseHelper(this.getContext());
+        List<Note> notes = db.getNotes();
+        if (!notes.isEmpty()) {
+            for (Note note : notes) {
+                List<NoteItem> items = db.getNoteItems(note.getId());
+                note.setItems(items);
+            }
+        }
+
+        return notes;
     }
 }

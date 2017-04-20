@@ -2,28 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_main"
+    android:id="@+id/content_reminder_notes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.dr.vlad.memento.MainActivity"
+    tools:context="com.dr.vlad.memento.fragments.ReminderNotesFragment"
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_main"
+        android:id="@+id/rv_note_reminders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorPrimary"
         android:padding="16dp" />
 
     <TextView
-        android:id="@+id/tv_empty_list"
+        android:id="@+id/tv_empty_list_reminders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:drawableTop="@mipmap/ic_note"
-        android:text="@string/empty_list"
+        android:drawableTop="@mipmap/ic_reminder_alarm"
+        android:text="@string/empty_list_reminder_notes"
         android:textColor="@color/colorTextSecondary"
         android:textSize="24sp" />
 

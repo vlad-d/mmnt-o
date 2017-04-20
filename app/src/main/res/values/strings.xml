@@ -14,6 +14,7 @@
     <string name="close_app">Close</string>
     <string name="cancel">Cancel</string>
     <string name="empty_list">There are no notes</string>
+    <string name="empty_list_reminder_notes">There are no upcoming reminders</string>
 
     <!--Hints-->
     <string name="hint_note_title">Title</string>
