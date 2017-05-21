@@ -6,11 +6,16 @@
         <item
             android:id="@+id/nav_notes"
             android:icon="@drawable/ic_menu_notes"
-            android:title="Notes" />
+            android:title="@string/menu_nav_notes" />
         <item
             android:id="@+id/nav_notes_reminder"
             android:icon="@drawable/ic_menu_priority"
-            android:title="Reminders" />
+            android:title="@string/menu_nav_notes_reminders" />
+
+        <item
+            android:id="@+id/nav_notes_archive"
+            android:icon="@drawable/ic_menu_arcchive"
+            android:title="@string/menu_nav_notes_archive" />
 
     </group>
 

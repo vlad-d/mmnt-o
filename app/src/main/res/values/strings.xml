@@ -16,6 +16,10 @@
     <string name="empty_list">There are no notes</string>
     <string name="empty_list_reminder_notes">There are no upcoming reminders</string>
 
+    <string name="menu_nav_notes">Notes</string>
+    <string name="menu_nav_notes_reminders">Reminders</string>
+    <string name="menu_nav_notes_archive">Archive</string>
+
     <!--Hints-->
     <string name="hint_note_title">Title</string>
     <string name="hint_note_body">Note</string>

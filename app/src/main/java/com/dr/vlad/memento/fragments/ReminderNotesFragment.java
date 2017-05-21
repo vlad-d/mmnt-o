@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,16 @@ import android.widget.TextView;
 
 import com.dr.vlad.memento.MainActivity;
 import com.dr.vlad.memento.R;
+import com.dr.vlad.memento.model.Note;
+
+import java.util.List;
 
 public class ReminderNotesFragment extends Fragment {
+
+    public static final String TAG = NotesFragment.class.getSimpleName();
+    List<Note> notes;
+    RecyclerView rvMainRecyclerView;
+    RecyclerView.Adapter adapter;
 
 
     @Override

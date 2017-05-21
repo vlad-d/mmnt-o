@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -263,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         btnCreateNote = findViewById(R.id.btn_create_note);
         btnCreateNote.setOnClickListener(this);
         btnCreateFromCamera = findViewById(R.id.btn_create_from_camera);
-//        btnCreateFromCamera.setOnClickListener(this);
+        btnCreateFromCamera.setOnClickListener(this);
 //        btnBAction3 = findViewById(R.id.btn_b_3);
 //        btnBAction4 = findViewById(R.id.btn_b_4);
         bottomActionsContainer = findViewById(R.id.actions_container);
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.btn_create_from_camera:
-                startActivity(new Intent(this, CreateChecklistActivity.class));
+                startActivity(new Intent(this, CameraIntentActivity.class));
                 break;
 
         }
