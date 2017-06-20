@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:key="@string/key_pref_settings_note"
-        android:title="@string/pref_note_title"></PreferenceCategory>
+    <!--<PreferenceCategory-->
+        <!--android:key="@string/key_pref_settings_note"-->
+        <!--android:title="@string/pref_note_title">-->
+
+    <!--</PreferenceCategory>-->
+
     <PreferenceCategory
         android:key="@string/key_pref_settings_reminder"
         android:title="@string/pref_reminder_tile">
         <com.dr.vlad.memento.fragments.TimePickerPreference
             android:defaultValue="@string/morning_time"
+            android:summary="@string/morning_time"
             android:key="@string/key_pref_morning_time"
             android:title="Morning" />
         <com.dr.vlad.memento.fragments.LocationPreference
             android:key="@string/key_pref_location"
             android:summary="not set"
             android:title="Work" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/key_pref_settings_ocr"
+        android:title="@string/pref_title_ocr">
+        <Preference android:title="@string/pref_title_learn">
+            <intent
+                android:targetClass="com.dr.vlad.memento.ocr.LearnActivity"
+                android:targetPackage="com.dr.vlad.memento" />
+        </Preference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

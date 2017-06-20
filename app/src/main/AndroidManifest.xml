@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -38,6 +37,11 @@
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ocr.LearnActivity"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        />
 
         <activity
             android:name=".CameraIntentActivity"
@@ -57,7 +61,6 @@
 
         <activity android:name=".fragments.NotesFragment" />
         <activity android:name=".fragments.ReminderNotesFragment" />
-
     </application>
 
 </manifest>

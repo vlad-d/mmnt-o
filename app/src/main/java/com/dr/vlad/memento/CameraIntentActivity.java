@@ -64,16 +64,13 @@ public class CameraIntentActivity extends Activity {
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
-
-
-
     }
 
     private ImageReader mImageReader;
     private int mState;
     private ImageView mPhotoCapturedImageView;
     private String mImageFileLocation = "";
-    private String GALLERY_LOCATION = "CV_Basic";
+    private String GALLERY_LOCATION = "mmnt-o";
     private File mGalleryFolder;
     private Size mPreviewSize;
     private String mCameraId;

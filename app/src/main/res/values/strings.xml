@@ -6,6 +6,9 @@
 
     <string name="action_settings">Settings</string>
 
+    <!--Activities-->
+    <string name="title_learn">Learn</string>
+
     <!--Messages-->
     <string name="message_close_app">Close application?</string>
 
@@ -16,6 +19,8 @@
     <string name="empty_list">There are no notes</string>
     <string name="empty_list_reminder_notes">There are no upcoming reminders</string>
 
+    <string name="take_photo">Take Photo</string>
+
     <string name="menu_nav_notes">Notes</string>
     <string name="menu_nav_notes_reminders">Reminders</string>
     <string name="menu_nav_notes_archive">Archive</string>
@@ -23,6 +28,9 @@
     <!--Hints-->
     <string name="hint_note_title">Title</string>
     <string name="hint_note_body">Note</string>
+    <string name="hint_train_text">To make the app  better understand your writing, first you need to provide some samples
+     of your hand writing. BLA bla bla ......BLA bla bla ......BLA bla bla ...... To begin press the below button</string>
+    <string name="dots">...</string>
 
     <!--BottomSheet-->
     <string name="bottom_sheet_cancel">Cancel</string>
@@ -49,6 +57,11 @@
     <string name="key_pref_settings_note">pref_key_note_settings</string>
     <string name="key_pref_"></string>
     <string name="key_intent_geofence_reminder">intent_geofence_reminder</string>
+    <string name="key_pref_settings_ocr">pref_ocr_settings</string>
+
+    <!--Other-->
+    <string name="pref_title_ocr">Ocr</string>
+    <string name="pref_title_learn">Learn</string>
 
     <!--Reminder-->
     <string name="tomorrow_morning">Tomorrow morning</string>
@@ -62,5 +75,6 @@
     <string name="pref_reminder_tile">Reminder</string>
     <string name="pref_note_title">Note</string>
     <string name="remider_work_location_not_set">Work location not set!</string>
+
 
 </resources>
