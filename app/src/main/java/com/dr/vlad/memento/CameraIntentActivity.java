@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -25,6 +26,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Message;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
@@ -34,8 +38,13 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.dr.vlad.memento.ocr.LearnActivity;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +57,11 @@ import java.util.List;
 public class CameraIntentActivity extends Activity {
 
     public static final String TAG = CameraIntentActivity.class.getSimpleName();
+    public static final String BUNDLE_KEY = "image_path";
+    public static final String ACTIVITY_KEY = "activity_key";
+    public static final String CODE_ACTIVITY_LEARN = "learn_activity";
+    public static final String CODE_ACTIVITY_READ = "read_activity";
+    public static final String IMAGE_SAVED = "saved_image";
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int ACTIVITY_START_CAMERA_APP = 0;
     private static final int REQUEST_WRITE_STORAGE_RESULT = 1;
@@ -57,7 +71,9 @@ public class CameraIntentActivity extends Activity {
     private static final int STATE_WAITING_PRECAPTURE = 2;
     private static final int STATE_WAITING_NON_PRECAPTURE = 3;
     private static final int STATE_PICTURE_CAPTURED = 4;
-
+    protected static Class callingClass;
+    protected static String imagePath;
+    private static File mImageFile;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -79,18 +95,18 @@ public class CameraIntentActivity extends Activity {
     private CaptureRequest mPreviewCaptureRequest;
     private CaptureRequest.Builder mPreviewCaptureRequestBuilder;
     private CameraCaptureSession mCameraCaptureSession;
-    private HandlerThread mBackgroundThread;
-    private Handler mBackgroundHandler;
+    protected HandlerThread mBackgroundThread;
+    protected static Handler mBackgroundHandler;
+    protected static Runnable mRunnable;
     private Image mImage;
-    private static File mImageFile;
-
-
-
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mImage = reader.acquireNextImage(); //YUV_420_888
+            mImage = reader.acquireNextImage(); //JPEG
+//            mBackgroundHandler.post(new ImageSaver(mImage));
 
+            saveImage();
+            returnToCallingActivity();
         }
 
 
@@ -350,7 +366,7 @@ public class CameraIntentActivity extends Activity {
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
 
                 Size largestImageSize = Collections.max(
-                        Arrays.asList(map.getOutputSizes(ImageFormat.YUV_420_888)),
+                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                         new Comparator<Size>() {
                             @Override
                             public int compare(Size lhs, Size rhs) {
@@ -358,7 +374,7 @@ public class CameraIntentActivity extends Activity {
                             }
                         }
                 );
-                mImageReader = ImageReader.newInstance(largestImageSize.getWidth(), largestImageSize.getHeight(), ImageFormat.YUV_420_888, 1);
+                mImageReader = ImageReader.newInstance(largestImageSize.getWidth(), largestImageSize.getHeight(), ImageFormat.JPEG, 1);
                 mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
                 mPreviewSize = getPreferredPreviewSize(map.getOutputSizes(SurfaceTexture.class), width, height);
                 mCameraId = cameraId;
@@ -404,11 +420,27 @@ public class CameraIntentActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        if (null == extras) {
+            finish();
+        }
+        String activityCode = extras.getString(ACTIVITY_KEY, CODE_ACTIVITY_READ);
+        switch (activityCode) {
+            case CODE_ACTIVITY_READ:
+
+                break;
+            case CODE_ACTIVITY_LEARN:
+                callingClass = LearnActivity.class;
+                break;
+        }
         Log.i(TAG, "CAMERA ACTIVITY");
         setContentView(R.layout.activity_camera_intent);
+        createImageGallery();
         mTextureView = (TextureView) findViewById(R.id.textureView);
 
+
     }
+
 
     @Override
     protected void onResume() {
@@ -486,6 +518,11 @@ public class CameraIntentActivity extends Activity {
     }
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
+
     private void caputreStillImage() {
         try {
             CaptureRequest.Builder captureStillBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
@@ -503,6 +540,7 @@ public class CameraIntentActivity extends Activity {
 
                     try {
                         mImageFile = createImageFile();
+                        Log.i(TAG, "IMAGE FILE: " + mImageFile.getCanonicalPath());
                     } catch (IOException e) {
                         e.printStackTrace();
 
@@ -528,7 +566,7 @@ public class CameraIntentActivity extends Activity {
     private File createImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
-        String imageFileName = "IMAGE_" + timeStamp + "_";
+        String imageFileName = "MMNTO_" + timeStamp + "_";
 
         File image = File.createTempFile(imageFileName, ".jpg", mGalleryFolder);
         mImageFileLocation = image.getAbsolutePath();
@@ -545,6 +583,73 @@ public class CameraIntentActivity extends Activity {
 
     }
 
+    private void saveImage() {
+        ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
+        byte[] bytes = new byte[byteBuffer.remaining()];
+        byteBuffer.get(bytes);
+        FileOutputStream fileOutputStream = null;
+        try {
+
+            fileOutputStream = new FileOutputStream(mImageFile);
+            fileOutputStream.write(bytes);
+            imagePath = mImageFile.getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            mImage.close();
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void returnToCallingActivity() {
+        Intent intent = new Intent(CameraIntentActivity.this, callingClass);
+        intent.putExtra(BUNDLE_KEY, imagePath);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+
+    private static class ImageSaver implements Runnable {
+
+        private final Image mImage;
+
+        public ImageSaver(Image mImage) {
+            this.mImage = mImage;
+        }
+
+        @Override
+        public void run() {
+            ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(bytes);
+            FileOutputStream fileOutputStream = null;
+            try {
+
+                fileOutputStream = new FileOutputStream(mImageFile);
+                fileOutputStream.write(bytes);
+                String path = mImageFile.getCanonicalPath();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                mImage.close();
+                if (fileOutputStream != null) {
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+        }
+    }
 
 
 }
