@@ -17,6 +17,63 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:title="@string/dots" />
 
+    <ProgressBar
+        android:id="@+id/learn_progress_bar"
+        style="@android:style/Widget.Material.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:id="@+id/learn_activity_image_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="24dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/learn_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:layout_below="@id/learn_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+
+            <ImageButton
+                android:id="@+id/prev_symbol_button"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_prev"/>
+
+            <EditText
+                android:id="@+id/input_symbol_text"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:cursorVisible="false"/>
+
+            <ImageButton
+                android:id="@+id/next_symbol_button"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_next"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/learn_activity_info_ll"
         android:layout_width="match_parent"
@@ -26,7 +83,8 @@
         android:paddingBottom="24dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="24dp">
+        android:paddingTop="24dp"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,8 +95,8 @@
             android:id="@+id/learn_activity_take_photo_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/take_photo"
-            android:layout_marginTop="72dp"/>
+            android:layout_marginTop="72dp"
+            android:text="@string/take_photo" />
 
     </LinearLayout>
 

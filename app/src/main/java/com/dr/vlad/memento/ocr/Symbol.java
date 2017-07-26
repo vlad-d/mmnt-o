@@ -4,21 +4,21 @@ package com.dr.vlad.memento.ocr;
 import android.graphics.Bitmap;
 
 import org.opencv.android.Utils;
-import org.opencv.core.MatOfPoint;
+import org.opencv.core.Mat;
 
 public class Symbol {
-    private MatOfPoint matSymbol;
+    private Mat matSymbol;
     private int intSymbol;
 
-    public Symbol(MatOfPoint matSymbol) {
+    public Symbol(Mat matSymbol) {
         this.matSymbol = matSymbol;
     }
 
-    public MatOfPoint getMatSymbol() {
+    public Mat getMatSymbol() {
         return matSymbol;
     }
 
-    public Symbol setMatSymbol(MatOfPoint matSymbol) {
+    public Symbol setMatSymbol(Mat matSymbol) {
         this.matSymbol = matSymbol;
         return this;
     }
