@@ -8,7 +8,7 @@ import org.opencv.core.Mat;
 
 public class Symbol {
     private Mat matSymbol;
-    private int intSymbol;
+    private Integer intSymbol;
 
     public Symbol(Mat matSymbol) {
         this.matSymbol = matSymbol;
@@ -23,11 +23,11 @@ public class Symbol {
         return this;
     }
 
-    public int getIntSymbol() {
+    public Integer getIntSymbol() {
         return intSymbol;
     }
 
-    public Symbol setIntSymbol(int intSymbol) {
+    public Symbol setIntSymbol(Integer intSymbol) {
         this.intSymbol = intSymbol;
         return this;
     }
@@ -36,5 +36,11 @@ public class Symbol {
         Bitmap result = Bitmap.createBitmap(matSymbol.cols(), matSymbol.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(matSymbol, result);
         return result;
+    }
+
+    public String getCharacter() {
+        char character = (char) intSymbol.intValue();
+        return String.valueOf(character);
+
     }
 }

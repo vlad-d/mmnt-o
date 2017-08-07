@@ -18,6 +18,8 @@ public class ImageUtils {
     public static final String TAG = ImageUtils.class.getSimpleName();
     public static final int RESIZED_IMAGE_WIDTH = 200;
     public static final int RESIZED_IMAGE_HEIGHT = 300;
+    public static final int SYMBOL_IMAGE_WIDTH = 20;
+    public static final int SYMBOL_IMAGE_HEIGHT = 30;
     public static final int MIN_CONTOUR_AREA = 500;
 
     private Mat imgOriginal;

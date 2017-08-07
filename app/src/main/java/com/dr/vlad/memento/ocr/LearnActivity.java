@@ -108,24 +108,10 @@ public class LearnActivity extends AppCompatActivity implements View.OnClickList
                         symbolsArraySize = mSymbols.size();
                         showKeyboard(true);
                         showSymbol(index);
+                        updateButtons();
                     }
                 })
                 .execute();
-    }
-
-    private void loadImage2() {
-        imageView.post(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bmp = BitmapFactory.decodeFile(imagePath);
-                ImageUtils imageUtils = new ImageUtils(bmp);
-                ArrayList<Symbol> symbols = imageUtils.getSymbols();
-                imageView.setImageBitmap(symbols.get(2).toBitmap());
-                infoLayout.setVisibility(View.GONE);
-                imageLayout.setVisibility(View.VISIBLE);
-                showKeyboard(true);
-            }
-        });
     }
 
     private void showKeyboard(boolean show) {
@@ -139,8 +125,13 @@ public class LearnActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showSymbol(int index) {
-        if (index > -1 && index < symbolsArraySize) {
-            imageView.setImageBitmap(mSymbols.get(index).toBitmap());
+        Symbol symbol = mSymbols.get(index);
+        imageView.setImageBitmap(symbol.toBitmap());
+
+        if (symbolHasData()) {
+            inputText.setText(symbol.getCharacter());
+        } else {
+            clearInput();
         }
     }
 
@@ -153,28 +144,123 @@ public class LearnActivity extends AppCompatActivity implements View.OnClickList
                 takePhotoTmp();
                 break;
             case R.id.prev_symbol_button:
-                if (index == symbolsArraySize - 1) {
-                    nextSymbolButton.setImageResource(R.drawable.ic_action_next);
-                }
-                if (index > 0) {
-                    index--;
-                    showSymbol(index);
-                }
+                prevSymbol();
                 break;
 
             case R.id.next_symbol_button:
-                if (index == symbolsArraySize - 1) {
-                    Toast.makeText(this, "Training done...do something", Toast.LENGTH_SHORT).show();
-                }
-                if (index < symbolsArraySize - 1) {
-                    index++;
-                    if (index == symbolsArraySize - 1) {
-                        nextSymbolButton.setImageResource(R.drawable.ic_action_done);
-                    }
-                    showSymbol(index);
-                }
+                nextSymbol();
                 break;
         }
+    }
+
+
+    private void nextSymbol() {
+        updateCurrentSymbolData();
+
+        if (!symbolHasData()) {
+            Toast.makeText(this, "Please insert symbol", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isLastSymbol()) {
+            finishTraining();
+            Toast.makeText(this, "Training done...", Toast.LENGTH_SHORT).show();
+        }
+
+        showNextSymbol();
+        updateButtons();
+
+
+    }
+
+    private void prevSymbol() {
+        showPrevSymbol();
+    }
+
+    private void showNextSymbol() {
+        int tmpIndex = index + 1;
+        if (!isIndexValid(tmpIndex)) {
+            return;
+        }
+
+        showSymbol(++index);
+
+    }
+
+    private void showPrevSymbol() {
+        int tmpIndex = index - 1;
+        if (!isIndexValid(tmpIndex)) {
+            return;
+        }
+
+        showSymbol(--index);
+    }
+
+    private void updateButtons() {
+        if (isLastSymbol()) {
+            nextSymbolButton.setImageResource(R.drawable.ic_action_done);
+        } else {
+            nextSymbolButton.setImageResource(R.drawable.ic_action_next);
+        }
+
+        if (isFirstIndex()) {
+            prevSymbolButton.setClickable(false);
+        } else {
+            prevSymbolButton.setClickable(true);
+        }
+
+    }
+
+    private boolean isIndexValid(int validIndex) {
+        return (validIndex > -1 && validIndex < symbolsArraySize);
+    }
+
+    private boolean symbolHasData() {
+        if (null == mSymbols.get(index).getIntSymbol()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean updateCurrentSymbolData() {
+        final String input = getInput();
+        if (input.isEmpty()) {
+            return false;
+        }
+        final int inputChar = (int) input.charAt(0);
+        setSymbolData(inputChar, index);
+        return true;
+    }
+
+    private void setSymbolData(int data, int index) {
+        mSymbols.get(index).setIntSymbol(data);
+    }
+
+    private String getInput() {
+        return inputText.getText().toString();
+    }
+
+    private void clearInput() {
+        inputText.setText("");
+    }
+
+    private boolean isLastSymbol() {
+        return symbolsArraySize - 1 == index;
+    }
+
+    private boolean isFirstIndex() {
+        return index == 0;
+    }
+
+    private void finishTraining() {
+       /*
+       @TODO: 1. create classifier
+       @TODO: 2. delete image file
+       */
+
+        Classifier classifier = new Classifier();
+        classifier.setSymbols(mSymbols);
+
     }
 
 
